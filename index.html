@@ -7,80 +7,231 @@
   <title>Checklist | Proyecto de Distribución en Planta</title>
   <link rel="stylesheet" href="style.css" />
 </head>
+
 <body>
   <main class="container">
+
+    <!-- ENCABEZADO -->
     <header class="hero">
       <p class="eyebrow">CHECKLIST PÚBLICA</p>
+
       <h1>Proyecto de Distribución en Planta</h1>
-      <p class="subtitle">Seguimiento de las actividades del proyecto. Esta vista es de solo lectura.</p>
+
+      <p class="subtitle">
+        Seguimiento de las actividades del proyecto. Esta vista es de solo lectura.
+      </p>
     </header>
 
+
+    <!-- DOCUMENTOS DEL PROYECTO -->
+    <section class="panel drive-panel" aria-labelledby="drive-title">
+
+      <div class="section-heading">
+        <div>
+          <p class="eyebrow">DOCUMENTOS</p>
+          <h2 id="drive-title">Documentos del proyecto</h2>
+        </div>
+      </div>
+
+      <div id="driveLinks" class="drive-links"></div>
+
+      <p id="driveEmpty" class="empty hidden">
+        No hay documentos disponibles.
+      </p>
+
+    </section>
+
+
+    <!-- SECCIONES -->
     <section class="panel" aria-labelledby="sections-title">
+
       <div class="section-heading">
         <div>
           <p class="eyebrow">NAVEGACIÓN</p>
           <h2 id="sections-title">Secciones del proyecto</h2>
         </div>
       </div>
-      <div id="sectionButtons" class="section-buttons" aria-label="Secciones"></div>
-      <p id="sectionsEmpty" class="empty hidden">No hay secciones registradas.</p>
-    </section>
 
-    <div id="message" class="message hidden" role="alert"></div>
-
-    <section id="content" class="hidden">
-      <div class="current-section">
-        <p class="eyebrow">MOSTRANDO</p>
-        <h2 id="currentSectionName">Sección</h2>
+      <div
+        id="sectionButtons"
+        class="section-buttons"
+        aria-label="Secciones">
       </div>
 
-      <section class="progress-card" aria-labelledby="progress-title">
-        <div class="progress-top">
-          <div>
-            <p class="eyebrow">PROGRESO</p>
-            <h3 id="progress-title">Avance de la sección</h3>
-          </div>
-          <strong id="progressPercent" class="percent">0%</strong>
-        </div>
-        <div class="progress-track" aria-hidden="true">
-          <div id="progressBar" class="progress-bar"></div>
-        </div>
-        <div class="stats">
-          <div><span id="completedCount">0</span><small>Completadas</small></div>
-          <div><span id="inProgressCount">0</span><small>En proceso</small></div>
-          <div><span id="pendingCount">0</span><small>Pendientes</small></div>
-          <div><span id="totalCount">0</span><small>Total</small></div>
-        </div>
-      </section>
+      <p id="sectionsEmpty" class="empty hidden">
+        No hay secciones registradas.
+      </p>
 
-      <section class="activities-card" aria-labelledby="activities-title">
-        <div class="section-heading activities-heading">
-          <div>
-            <p class="eyebrow">CHECKLIST</p>
-            <h3 id="activities-title">Actividades</h3>
-          </div>
-          <span id="activityCount" class="count-badge">0 actividades</span>
-        </div>
-
-        <div class="table-wrap">
-          <table>
-            <thead>
-              <tr><th class="number-col">#</th><th>Actividad</th><th class="status-col">Estado</th></tr>
-            </thead>
-            <tbody id="activitiesBody"></tbody>
-          </table>
-        </div>
-        <p id="activitiesEmpty" class="empty hidden">Esta sección todavía no tiene actividades.</p>
-      </section>
     </section>
 
-    <div id="loading" class="loading">
-      <div class="spinner" aria-hidden="true"></div>
-      <span>Cargando proyecto…</span>
+
+    <!-- MENSAJES -->
+    <div
+      id="message"
+      class="message hidden"
+      role="alert">
     </div>
+
+
+    <!-- CONTENIDO -->
+    <section id="content" class="hidden">
+
+      <div class="current-section">
+
+        <p class="eyebrow">
+          MOSTRANDO
+        </p>
+
+        <h2 id="currentSectionName">
+          Sección
+        </h2>
+
+      </div>
+
+
+      <!-- PROGRESO -->
+      <section
+        class="progress-card"
+        aria-labelledby="progress-title">
+
+        <div class="progress-top">
+
+          <div>
+            <p class="eyebrow">PROGRESO</p>
+
+            <h3 id="progress-title">
+              Avance de la sección
+            </h3>
+          </div>
+
+          <strong
+            id="progressPercent"
+            class="percent">
+            0%
+          </strong>
+
+        </div>
+
+
+        <div
+          class="progress-track"
+          aria-hidden="true">
+
+          <div
+            id="progressBar"
+            class="progress-bar">
+          </div>
+
+        </div>
+
+
+        <div class="stats">
+
+          <div>
+            <span id="completedCount">0</span>
+            <small>Completadas</small>
+          </div>
+
+          <div>
+            <span id="inProgressCount">0</span>
+            <small>En proceso</small>
+          </div>
+
+          <div>
+            <span id="pendingCount">0</span>
+            <small>Pendientes</small>
+          </div>
+
+          <div>
+            <span id="totalCount">0</span>
+            <small>Total</small>
+          </div>
+
+        </div>
+
+      </section>
+
+
+      <!-- ACTIVIDADES -->
+      <section
+        class="activities-card"
+        aria-labelledby="activities-title">
+
+        <div class="section-heading activities-heading">
+
+          <div>
+            <p class="eyebrow">CHECKLIST</p>
+
+            <h3 id="activities-title">
+              Actividades
+            </h3>
+          </div>
+
+          <span
+            id="activityCount"
+            class="count-badge">
+            0 actividades
+          </span>
+
+        </div>
+
+
+        <div class="table-wrap">
+
+          <table>
+
+            <thead>
+              <tr>
+                <th class="number-col">#</th>
+                <th>Actividad</th>
+                <th class="status-col">Estado</th>
+              </tr>
+            </thead>
+
+            <tbody id="activitiesBody"></tbody>
+
+          </table>
+
+        </div>
+
+
+        <p
+          id="activitiesEmpty"
+          class="empty hidden">
+
+          Esta sección todavía no tiene actividades.
+
+        </p>
+
+      </section>
+
+    </section>
+
+
+    <!-- CARGANDO -->
+    <div
+      id="loading"
+      class="loading">
+
+      <div
+        class="spinner"
+        aria-hidden="true">
+      </div>
+
+      <span>
+        Cargando proyecto…
+      </span>
+
+    </div>
+
   </main>
 
+
+  <!-- SUPABASE -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+  <!-- APP -->
   <script src="app.js"></script>
+
 </body>
 </html>
