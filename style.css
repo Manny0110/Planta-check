@@ -69,4 +69,137 @@ td { font-size:.92rem; line-height:1.45; }
   .section-button { flex:1 1 calc(50% - 10px); }
   th,td { padding:13px 12px; }
   .status-col { width:auto; }
+  /* =========================================================
+   DOCUMENTOS DE GOOGLE DRIVE
+   ========================================================= */
+
+.drive-panel {
+  margin-bottom: 28px;
+}
+
+.drive-links {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+  margin-top: 18px;
+}
+
+.drive-card {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  min-width: 0;
+  padding: 20px;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  background: var(--card-2);
+  transition:
+    transform .18s ease,
+    border-color .18s ease,
+    background .18s ease;
+}
+
+.drive-card:hover {
+  transform: translateY(-2px);
+  border-color: #52525b;
+  background: #1b1b20;
+}
+
+.drive-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 48px;
+  width: 48px;
+  height: 48px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: var(--card);
+  font-size: 1.45rem;
+}
+
+.drive-card-content {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  min-width: 0;
+  flex: 1;
+}
+
+.drive-label {
+  margin: 0 0 5px;
+  color: var(--muted);
+  font-size: .68rem;
+  font-weight: 750;
+  letter-spacing: .11em;
+}
+
+.drive-card h3 {
+  margin: 0;
+  color: var(--text);
+  font-size: 1rem;
+  line-height: 1.3;
+}
+
+.drive-description {
+  margin: 7px 0 15px;
+  color: var(--muted);
+  font-size: .82rem;
+  line-height: 1.5;
+}
+
+.drive-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: auto;
+  padding: 9px 13px;
+  border: 1px solid var(--accent);
+  border-radius: 9px;
+  background: var(--accent);
+  color: var(--accent-text);
+  font-size: .8rem;
+  font-weight: 700;
+  text-decoration: none;
+  transition:
+    transform .18s ease,
+    opacity .18s ease;
+}
+
+.drive-button:hover {
+  transform: translateY(-1px);
+  opacity: .88;
+}
+
+.drive-button:focus-visible {
+  outline: 2px solid var(--process);
+  outline-offset: 3px;
+}
+
+
+/* =========================================================
+   DOCUMENTOS - CELULAR
+   ========================================================= */
+
+@media (max-width: 650px) {
+
+  .drive-links {
+    grid-template-columns: 1fr;
+  }
+
+  .drive-card {
+    padding: 17px;
+  }
+
+  .drive-icon {
+    flex-basis: 44px;
+    width: 44px;
+    height: 44px;
+    font-size: 1.3rem;
+  }
+
+  .drive-button {
+    width: 100%;
+  }
+}
 }
