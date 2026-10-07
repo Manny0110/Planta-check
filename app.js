@@ -122,6 +122,7 @@ async function loadDriveLinks() {
   renderDriveLinks(data ?? []);
 }
 
+
 function renderDriveLinks(links) {
   els.driveLinks.innerHTML = "";
 
@@ -132,14 +133,30 @@ function renderDriveLinks(links) {
 
   els.driveEmpty.classList.add("hidden");
 
+  const descriptions = {
+    "Carpeta Fashion Yekora":
+      "Accede a la carpeta principal de archivos de Fashion Yekora.",
+
+    "Distribución en Planta":
+      "Consulta los documentos y archivos de la materia Distribución en Planta.",
+
+    "Medida del Trabajo":
+      "Consulta los documentos y archivos de la materia Medida del Trabajo."
+  };
+
+  const icons = {
+    "Carpeta Fashion Yekora": "📁",
+    "Distribución en Planta": "🏭",
+    "Medida del Trabajo": "📏"
+  };
+
   for (const item of links) {
     const card = document.createElement("article");
     card.className = "drive-card";
 
     const icon = document.createElement("div");
     icon.className = "drive-icon";
-    icon.textContent =
-      item.apartado === "WORD ACTUALIZADO" ? "📄" : "📁";
+    icon.textContent = icons[item.apartado] || "📂";
 
     const content = document.createElement("div");
     content.className = "drive-card-content";
@@ -154,17 +171,16 @@ function renderDriveLinks(links) {
     const description = document.createElement("p");
     description.className = "drive-description";
     description.textContent =
-      item.apartado === "WORD ACTUALIZADO"
-        ? "Accede al documento actualizado del proyecto."
-        : "Accede a los archivos del proyecto.";
+      descriptions[item.apartado] ||
+      "Accede a los archivos del proyecto.";
 
     const link = document.createElement("a");
     link.className = "drive-button";
     link.textContent = "Abrir en Drive ↗";
 
-    // Solo aceptar enlaces HTTPS de Google Drive.
     try {
       const url = new URL(item.url);
+
       if (
         url.protocol === "https:" &&
         url.hostname === "drive.google.com"
@@ -173,7 +189,6 @@ function renderDriveLinks(links) {
         link.target = "_blank";
         link.rel = "noopener noreferrer";
       } else {
-        link.removeAttribute("href");
         link.textContent = "Enlace no válido";
       }
     } catch {
@@ -182,9 +197,11 @@ function renderDriveLinks(links) {
 
     content.append(label, title, description, link);
     card.append(icon, content);
+
     els.driveLinks.appendChild(card);
   }
 }
+
 
 // =============================================================
 // CARGAR SECCIONES
