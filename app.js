@@ -6,21 +6,22 @@
 const SUPABASE_URL = "https://hzsqgqiljukgqrblovrx.supabase.co";
 const SUPABASE_PUBLISHABLE_KEY = "sb_publishable_YgxLYterTKv8-Xak9gF5YQ_zf3aWZ5q";
 
+// =============================================================
+// ELEMENTOS DE LA PÁGINA
+// =============================================================
+
 const els = {
   loading: document.querySelector("#loading"),
   message: document.querySelector("#message"),
   content: document.querySelector("#content"),
 
-  // Drive
   driveLinks: document.querySelector("#driveLinks"),
   driveEmpty: document.querySelector("#driveEmpty"),
 
-  // Secciones
   sectionButtons: document.querySelector("#sectionButtons"),
   sectionsEmpty: document.querySelector("#sectionsEmpty"),
   currentSectionName: document.querySelector("#currentSectionName"),
 
-  // Progreso
   progressPercent: document.querySelector("#progressPercent"),
   progressBar: document.querySelector("#progressBar"),
   completedCount: document.querySelector("#completedCount"),
@@ -28,17 +29,18 @@ const els = {
   pendingCount: document.querySelector("#pendingCount"),
   totalCount: document.querySelector("#totalCount"),
 
-  // Actividades
   activityCount: document.querySelector("#activityCount"),
   activitiesBody: document.querySelector("#activitiesBody"),
   activitiesEmpty: document.querySelector("#activitiesEmpty"),
 };
 
-
 let sections = [];
 let selectedSectionId = null;
 let db = null;
 
+// =============================================================
+// CONFIGURACIÓN Y MENSAJES
+// =============================================================
 
 function configurationIsReady() {
   return (
@@ -49,500 +51,363 @@ function configurationIsReady() {
   );
 }
 
-
 function showError(text) {
   els.message.textContent = text;
   els.message.classList.remove("hidden");
 }
 
-
 function clearError() {
-  els.message.classList.add("hidden");
   els.message.textContent = "";
+  els.message.classList.add("hidden");
 }
-
 
 // =============================================================
 // INICIAR APLICACIÓN
 // =============================================================
 
 async function init() {
-
   if (!configurationIsReady()) {
     els.loading.classList.add("hidden");
-
     showError(
-      "Falta configurar Supabase. Revisa SUPABASE_URL y SUPABASE_PUBLISHABLE_KEY."
+      "Falta configurar Supabase. Revisa las dos primeras constantes de app.js."
     );
-
     return;
   }
 
+  if (!window.supabase) {
+    els.loading.classList.add("hidden");
+    showError("No se pudo cargar la biblioteca de Supabase.");
+    return;
+  }
 
   db = window.supabase.createClient(
     SUPABASE_URL,
     SUPABASE_PUBLISHABLE_KEY
   );
 
+  clearError();
 
   try {
-
-    clearError();
-
-    // Cargamos documentos y secciones
-    await Promise.all([
+    const results = await Promise.allSettled([
       loadDriveLinks(),
       loadSections()
     ]);
 
+    const errors = results
+      .filter(result => result.status === "rejected")
+      .map(result => result.reason.message);
+
+    if (errors.length > 0) {
+      showError(`Error al cargar datos: ${errors.join("; ")}`);
+    }
   } catch (error) {
-
+    showError(`Error inesperado: ${error.message}`);
+  } finally {
     els.loading.classList.add("hidden");
-
-    showError(
-      `No se pudieron cargar los datos: ${error.message}`
-    );
   }
 }
 
-
 // =============================================================
-// LINKS DE GOOGLE DRIVE
+// GOOGLE DRIVE
 // =============================================================
 
 async function loadDriveLinks() {
-
   const { data, error } = await db
     .from("links_drive")
     .select("id, apartado, orden, titulo, url")
     .order("orden", { ascending: true });
 
-
   if (error) throw error;
 
-
-  const links = data ?? [];
-
-  renderDriveLinks(links);
+  renderDriveLinks(data ?? []);
 }
 
-
 function renderDriveLinks(links) {
-
   els.driveLinks.innerHTML = "";
 
-
   if (links.length === 0) {
-
     els.driveEmpty.classList.remove("hidden");
-
     return;
   }
 
-
   els.driveEmpty.classList.add("hidden");
 
-
   for (const item of links) {
-
     const card = document.createElement("article");
-
     card.className = "drive-card";
 
-
-    // Icono
     const icon = document.createElement("div");
-
     icon.className = "drive-icon";
-
     icon.textContent =
-      item.apartado === "WORD ACTUALIZADO"
-        ? "📄"
-        : "📁";
+      item.apartado === "WORD ACTUALIZADO" ? "📄" : "📁";
 
-
-    // Contenido
     const content = document.createElement("div");
-
     content.className = "drive-card-content";
 
-
     const label = document.createElement("p");
-
     label.className = "drive-label";
-
     label.textContent = "GOOGLE DRIVE";
 
-
     const title = document.createElement("h3");
-
     title.textContent = item.titulo;
 
-
     const description = document.createElement("p");
-
     description.className = "drive-description";
-
     description.textContent =
       item.apartado === "WORD ACTUALIZADO"
         ? "Accede al documento actualizado del proyecto."
-        : "Accede a la carpeta principal de archivos del proyecto.";
+        : "Accede a los archivos del proyecto.";
 
-
-    // Botón
     const link = document.createElement("a");
-
     link.className = "drive-button";
-
-    link.href = item.url;
-
-    link.target = "_blank";
-
-    link.rel = "noopener noreferrer";
-
     link.textContent = "Abrir en Drive ↗";
 
+    // Solo aceptar enlaces HTTPS de Google Drive.
+    try {
+      const url = new URL(item.url);
+      if (
+        url.protocol === "https:" &&
+        url.hostname === "drive.google.com"
+      ) {
+        link.href = url.href;
+        link.target = "_blank";
+        link.rel = "noopener noreferrer";
+      } else {
+        link.removeAttribute("href");
+        link.textContent = "Enlace no válido";
+      }
+    } catch {
+      link.textContent = "Enlace no válido";
+    }
 
-    content.append(
-      label,
-      title,
-      description,
-      link
-    );
-
-
-    card.append(
-      icon,
-      content
-    );
-
-
+    content.append(label, title, description, link);
+    card.append(icon, content);
     els.driveLinks.appendChild(card);
   }
 }
 
-
 // =============================================================
-// SECCIONES
+// CARGAR SECCIONES
 // =============================================================
 
 async function loadSections() {
-
-  els.loading.classList.remove("hidden");
-
-
   const { data, error } = await db
     .from("secciones")
     .select("id, nombre, orden")
     .order("orden", { ascending: true });
 
-
   if (error) throw error;
 
-
   sections = data ?? [];
-
-
   renderSectionButtons();
 
-
   if (sections.length === 0) {
-
-    els.loading.classList.add("hidden");
-
     els.sectionsEmpty.classList.remove("hidden");
-
+    els.content.classList.add("hidden");
     return;
   }
 
-
   els.sectionsEmpty.classList.add("hidden");
 
-
-  await selectSection(
-    sections[0].id
-  );
-
-
-  els.loading.classList.add("hidden");
-
+  await selectSection(sections[0].id);
   els.content.classList.remove("hidden");
 }
-
 
 // =============================================================
 // BOTONES DE SECCIONES
 // =============================================================
 
 function renderSectionButtons() {
-
   els.sectionButtons.innerHTML = "";
 
-
   for (const section of sections) {
-
     const button = document.createElement("button");
 
-
     button.type = "button";
-
     button.className = "section-button";
-
     button.textContent = section.nombre;
+    button.dataset.sectionId = String(section.id);
 
-    button.dataset.sectionId =
-      String(section.id);
-
-
-    button.addEventListener(
-      "click",
-      () => selectSection(section.id)
-    );
-
+    button.addEventListener("click", () => {
+      selectSection(section.id);
+    });
 
     els.sectionButtons.appendChild(button);
   }
 }
-
 
 // =============================================================
 // SELECCIONAR SECCIÓN
 // =============================================================
 
 async function selectSection(sectionId) {
-
-  selectedSectionId =
-    String(sectionId);
-
-
+  selectedSectionId = String(sectionId);
   clearError();
 
-
-  for (
-    const button of
-    els.sectionButtons.querySelectorAll(".section-button")
-  ) {
-
+  for (const button of els.sectionButtons.querySelectorAll(
+    ".section-button"
+  )) {
     button.classList.toggle(
       "active",
       button.dataset.sectionId === selectedSectionId
     );
   }
 
-
   const section = sections.find(
-    (item) =>
-      String(item.id) === selectedSectionId
+    item => String(item.id) === selectedSectionId
   );
-
 
   els.currentSectionName.textContent =
     section?.nombre ?? "Sección";
 
-
   try {
-
     await loadActivities(sectionId);
-
   } catch (error) {
-
     showError(
       `No se pudieron cargar las actividades: ${error.message}`
     );
   }
 }
 
-
 // =============================================================
-// ACTIVIDADES
+// CARGAR ACTIVIDADES Y RESPONSABLES
 // =============================================================
 
 async function loadActivities(sectionId) {
-
   const { data, error } = await db
     .from("actividades")
     .select(
-      "id, orden, actividad, estado, updated_at, seccion_id"
+      "id, orden, actividad, responsable, estado, updated_at, seccion_id"
     )
     .eq("seccion_id", sectionId)
     .order("orden", { ascending: true });
 
-
   if (error) throw error;
 
+  // Evita mostrar datos de otra sección si el usuario
+  // cambia rápidamente entre botones.
+  if (String(sectionId) !== selectedSectionId) return;
 
   const activities = data ?? [];
 
-
   renderActivities(activities);
-
   renderProgress(activities);
 }
-
 
 // =============================================================
 // MOSTRAR ACTIVIDADES
 // =============================================================
 
 function renderActivities(activities) {
-
   els.activitiesBody.innerHTML = "";
-
 
   els.activityCount.textContent =
     `${activities.length} ${
-      activities.length === 1
-        ? "actividad"
-        : "actividades"
+      activities.length === 1 ? "actividad" : "actividades"
     }`;
 
-
   if (activities.length === 0) {
-
     els.activitiesEmpty.classList.remove("hidden");
-
     return;
   }
 
-
   els.activitiesEmpty.classList.add("hidden");
 
-
   for (const activity of activities) {
+    const tr = document.createElement("tr");
 
-    const tr =
-      document.createElement("tr");
+    // Número
+    const number = document.createElement("td");
+    number.textContent = activity.orden;
 
+    // Actividad
+    const title = document.createElement("td");
+    title.textContent = activity.actividad;
 
-    const number =
-      document.createElement("td");
+    // Responsable
+    const responsibleCell = document.createElement("td");
 
-    number.textContent =
-      activity.orden;
+    const responsible = document.createElement("span");
+    responsible.className = "responsible";
+    responsible.textContent =
+      activity.responsable || "Sin asignar";
 
+    responsibleCell.appendChild(responsible);
 
-    const title =
-      document.createElement("td");
+    // Estado
+    const statusCell = document.createElement("td");
 
-    title.textContent =
-      activity.actividad;
-
-
-    const statusCell =
-      document.createElement("td");
-
-
-    const status =
-      document.createElement("span");
-
-
-    status.className =
-      `status ${statusClass(activity.estado)}`;
-
-
-    status.textContent =
-      activity.estado;
-
+    const status = document.createElement("span");
+    status.className = `status ${statusClass(activity.estado)}`;
+    status.textContent = activity.estado;
 
     statusCell.appendChild(status);
 
-
+    // Orden de las cuatro columnas
     tr.append(
       number,
       title,
+      responsibleCell,
       statusCell
     );
-
 
     els.activitiesBody.appendChild(tr);
   }
 }
-
 
 // =============================================================
 // PROGRESO
 // =============================================================
 
 function renderProgress(activities) {
+  const total = activities.length;
 
-  const total =
-    activities.length;
+  const completed = activities.filter(
+    a => a.estado === "Completado"
+  ).length;
 
+  const inProgress = activities.filter(
+    a => a.estado === "En proceso"
+  ).length;
 
-  const completed =
-    activities.filter(
-      (a) =>
-        a.estado === "Completado"
-    ).length;
-
-
-  const inProgress =
-    activities.filter(
-      (a) =>
-        a.estado === "En proceso"
-    ).length;
-
-
-  const pending =
-    activities.filter(
-      (a) =>
-        a.estado === "Pendiente"
-    ).length;
-
+  const pending = activities.filter(
+    a => a.estado === "Pendiente"
+  ).length;
 
   const percent =
     total === 0
       ? 0
-      : Math.round(
-          (completed / total) * 100
-        );
+      : Math.round((completed / total) * 100);
 
+  els.progressPercent.textContent = `${percent}%`;
+  els.progressBar.style.width = `${percent}%`;
 
-  els.progressPercent.textContent =
-    `${percent}%`;
-
-
-  els.progressBar.style.width =
-    `${percent}%`;
-
-
-  els.completedCount.textContent =
-    completed;
-
-
-  els.inProgressCount.textContent =
-    inProgress;
-
-
-  els.pendingCount.textContent =
-    pending;
-
-
-  els.totalCount.textContent =
-    total;
+  els.completedCount.textContent = completed;
+  els.inProgressCount.textContent = inProgress;
+  els.pendingCount.textContent = pending;
+  els.totalCount.textContent = total;
 }
 
-
 // =============================================================
-// CLASE DEL ESTADO
+// ESTILOS DE ESTADO
 // =============================================================
 
 function statusClass(status) {
-
-  if (status === "Completado")
+  if (status === "Completado") {
     return "status-complete";
+  }
 
-
-  if (status === "En proceso")
+  if (status === "En proceso") {
     return "status-process";
-
+  }
 
   return "status-pending";
 }
-
 
 // =============================================================
 // INICIAR
 // =============================================================
 
 init();
+
+
