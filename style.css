@@ -203,3 +203,213 @@ td { font-size:.92rem; line-height:1.45; }
   }
 }
 }
+
+/* =========================================
+   RESPONSABLES
+   ========================================= */
+
+.responsible-col {
+  min-width: 130px;
+}
+
+.responsible {
+  display: inline-flex;
+  align-items: center;
+  padding: 7px 11px;
+  border-radius: 999px;
+  background: #23232b;
+  border: 1px solid #363640;
+  color: #f4f4f5;
+  font-size: .8rem;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+/* =========================================
+   ANIMACIONES SUAVES
+   ========================================= */
+
+html {
+  scroll-behavior: smooth;
+}
+
+button, a, .drive-card {
+  -webkit-tap-highlight-color: transparent;
+  transition:
+    transform .35s ease,
+    background-color .35s ease,
+    border-color .35s ease,
+    box-shadow .35s ease,
+    opacity .35s ease;
+}
+
+.section-button:hover,
+.drive-button:hover {
+  transform: translateY(-3px);
+}
+
+.section-button:active,
+.drive-button:active {
+  transform: scale(.97);
+}
+
+.drive-card:hover {
+  transform: translateY(-3px);
+  border-color: #52525b;
+}
+
+.progress-card,
+.activities-card {
+  animation: fadeUp .65s ease both;
+}
+
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* =========================================
+   TABLET
+   ========================================= */
+
+@media (max-width: 800px) {
+  .container {
+    width: calc(100% - 28px);
+  }
+
+  .table-wrap {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  table {
+    min-width: 680px;
+  }
+}
+
+/* =========================================
+   DISEÑO PARA CELULARES
+   ========================================= */
+
+@media (max-width: 650px) {
+  .container {
+    width: calc(100% - 24px);
+    padding: 28px 0 55px;
+  }
+
+  .hero {
+    margin-bottom: 24px;
+  }
+
+  h1 {
+    font-size: clamp(2rem, 9vw, 2.7rem);
+    line-height: 1.08;
+  }
+
+  .subtitle {
+    font-size: .92rem;
+    line-height: 1.6;
+  }
+
+  .panel,
+  .progress-card {
+    padding: 17px;
+    border-radius: 16px;
+  }
+
+  .section-buttons {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+
+  .section-button {
+    width: 100%;
+    text-align: left;
+    padding: 13px 15px;
+    border-radius: 12px;
+  }
+
+  .drive-links {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  .drive-card {
+    padding: 16px;
+  }
+
+  .drive-button {
+    min-height: 44px;
+    width: 100%;
+  }
+
+  .progress-top {
+    align-items: center;
+  }
+
+  .percent {
+    font-size: 1.7rem;
+  }
+
+  .stats {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 9px;
+  }
+
+  .stats div {
+    padding: 12px;
+  }
+
+  .activities-card {
+    border-radius: 16px;
+  }
+
+  .activities-heading {
+    padding: 17px;
+  }
+
+  .table-wrap {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  table {
+    min-width: 680px;
+  }
+
+  th, td {
+    padding: 13px 12px;
+  }
+
+  td {
+    font-size: .86rem;
+  }
+
+  .responsible-col {
+    min-width: 130px;
+  }
+}
+
+/* =========================================
+   ACCESIBILIDAD
+   ========================================= */
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *, *::before, *::after {
+    animation-duration: .01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: .01ms !important;
+  }
+}
+
