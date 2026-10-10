@@ -1,3 +1,8 @@
+
+/* =========================================
+   CONFIGURACION GENERAL
+   ========================================= */
+
 :root {
   color-scheme: dark;
   --bg: #09090b;
@@ -13,65 +18,98 @@
   --complete: #22c55e;
   --danger: #ef4444;
 }
-* { box-sizing: border-box; }
-body { margin:0; min-height:100vh; background:var(--bg); color:var(--text); font-family:Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; }
-.container { width:min(100% - 32px, 920px); margin:0 auto; padding:56px 0 72px; }
-.hero { margin-bottom:32px; }
-.eyebrow { margin:0 0 7px; color:var(--muted); font-size:.74rem; font-weight:750; letter-spacing:.12em; }
-h1,h2,h3,p { overflow-wrap:anywhere; }
-h1 { margin:0; max-width:780px; font-size:clamp(2rem,6vw,3.45rem); line-height:1.02; letter-spacing:-.045em; }
-.subtitle { margin:14px 0 0; color:var(--muted); font-size:1rem; line-height:1.65; }
-.panel,.progress-card,.activities-card { border:1px solid var(--border); background:var(--card); border-radius:18px; }
-.panel { padding:22px; margin-bottom:28px; }
-.section-heading { display:flex; align-items:end; justify-content:space-between; gap:16px; }
-.section-heading h2,.section-heading h3 { margin:0; font-size:1.15rem; }
-.section-buttons { display:flex; flex-wrap:wrap; gap:10px; margin-top:18px; }
-.section-button { appearance:none; border:1px solid var(--border); background:var(--card-2); color:var(--text); border-radius:10px; padding:10px 15px; font:inherit; font-size:.9rem; font-weight:650; cursor:pointer; transition:.18s ease; }
-.section-button:hover { transform:translateY(-1px); border-color:#52525b; }
-.section-button.active { background:var(--accent); color:var(--accent-text); border-color:var(--accent); }
-.current-section { margin:34px 0 16px; }
-.current-section h2 { margin:0; font-size:1.65rem; }
-.progress-card { padding:24px; }
-.progress-top { display:flex; justify-content:space-between; align-items:end; gap:20px; }
-.progress-top h3 { margin:0; font-size:1.08rem; }
-.percent { font-size:2rem; letter-spacing:-.04em; }
-.progress-track { width:100%; height:10px; margin-top:20px; border-radius:999px; background:#27272a; overflow:hidden; }
-.progress-bar { height:100%; width:0; border-radius:inherit; background:var(--accent); transition:width .35s ease; }
-.stats { display:grid; grid-template-columns:repeat(4,1fr); gap:12px; margin-top:22px; }
-.stats div { min-width:0; padding:12px; border-radius:12px; background:var(--card-2); }
-.stats span { display:block; font-size:1.3rem; font-weight:750; }
-.stats small { display:block; margin-top:3px; color:var(--muted); font-size:.78rem; }
-.activities-card { margin-top:28px; overflow:hidden; }
-.activities-heading { padding:22px 22px 17px; }
-.count-badge { color:var(--muted); font-size:.82rem; }
-.table-wrap { overflow-x:auto; }
-table { width:100%; border-collapse:collapse; }
-th { color:var(--muted); background:#0e0e11; font-size:.75rem; letter-spacing:.06em; text-transform:uppercase; }
-th,td { padding:15px 18px; text-align:left; border-top:1px solid var(--border); vertical-align:middle; }
-td { font-size:.92rem; line-height:1.45; }
-.number-col { width:64px; }
-.status-col { width:150px; }
-.status { display:inline-flex; align-items:center; gap:7px; white-space:nowrap; font-size:.8rem; font-weight:700; }
-.status::before { content:""; width:8px; height:8px; border-radius:50%; background:currentColor; }
-.status-pending { color:var(--pending); }
-.status-process { color:var(--process); }
-.status-complete { color:var(--complete); }
-.empty { margin:0; padding:28px 22px; color:var(--muted); text-align:center; }
-.message { margin:20px 0; padding:16px 18px; border:1px solid color-mix(in srgb, var(--danger) 40%, transparent); background:color-mix(in srgb, var(--danger) 8%, transparent); color:#fecaca; border-radius:12px; line-height:1.5; }
-.loading { display:flex; align-items:center; gap:10px; color:var(--muted); padding:22px 2px; }
-.spinner { width:18px; height:18px; border:2px solid #3f3f46; border-top-color:var(--text); border-radius:50%; animation:spin .75s linear infinite; }
-.hidden { display:none !important; }
-@keyframes spin { to { transform:rotate(360deg); } }
-@media (max-width:650px) {
-  .container { width:min(100% - 22px,920px); padding-top:34px; }
-  .panel,.progress-card { padding:18px; }
-  .stats { grid-template-columns:repeat(2,1fr); }
-  .section-button { flex:1 1 calc(50% - 10px); }
-  th,td { padding:13px 12px; }
-  .status-col { width:auto; }
-  /* =========================================================
-   DOCUMENTOS DE GOOGLE DRIVE
-   ========================================================= */
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background: var(--bg);
+  color: var(--text);
+  font-family: Inter, system-ui, -apple-system,
+    BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+.container {
+  width: min(calc(100% - 32px), 920px);
+  margin: 0 auto;
+  padding: 56px 0 72px;
+}
+
+h1, h2, h3, p {
+  overflow-wrap: anywhere;
+}
+
+/* =========================================
+   ENCABEZADO
+   ========================================= */
+
+.hero {
+  margin-bottom: 32px;
+}
+
+.eyebrow {
+  margin: 0 0 7px;
+  color: var(--muted);
+  font-size: .74rem;
+  font-weight: 750;
+  letter-spacing: .12em;
+}
+
+h1 {
+  margin: 0;
+  font-size: clamp(2rem, 6vw, 3.45rem);
+  line-height: 1.08;
+  letter-spacing: -.045em;
+}
+
+.subtitle {
+  margin: 14px 0 0;
+  color: var(--muted);
+  font-size: 1rem;
+  line-height: 1.65;
+}
+
+/* =========================================
+   PANELES
+   ========================================= */
+
+.panel,
+.progress-card,
+.activities-card {
+  min-width: 0;
+  border: 1px solid var(--border);
+  background: var(--card);
+  border-radius: 18px;
+}
+
+.panel {
+  padding: 22px;
+  margin-bottom: 28px;
+}
+
+.section-heading {
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.section-heading h2,
+.section-heading h3 {
+  margin: 0;
+  font-size: 1.15rem;
+}
+
+/* =========================================
+   GOOGLE DRIVE
+   ========================================= */
 
 .drive-panel {
   margin-bottom: 28px;
@@ -93,16 +131,12 @@ td { font-size:.92rem; line-height:1.45; }
   border: 1px solid var(--border);
   border-radius: 14px;
   background: var(--card-2);
-  transition:
-    transform .18s ease,
-    border-color .18s ease,
-    background .18s ease;
+  transition: transform .25s ease, border-color .25s ease;
 }
 
 .drive-card:hover {
-  transform: translateY(-2px);
+  transform: translateY(-3px);
   border-color: #52525b;
-  background: #1b1b20;
 }
 
 .drive-icon {
@@ -110,7 +144,6 @@ td { font-size:.92rem; line-height:1.45; }
   align-items: center;
   justify-content: center;
   flex: 0 0 48px;
-  width: 48px;
   height: 48px;
   border: 1px solid var(--border);
   border-radius: 12px;
@@ -122,8 +155,8 @@ td { font-size:.92rem; line-height:1.45; }
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  min-width: 0;
   flex: 1;
+  min-width: 0;
 }
 
 .drive-label {
@@ -136,7 +169,6 @@ td { font-size:.92rem; line-height:1.45; }
 
 .drive-card h3 {
   margin: 0;
-  color: var(--text);
   font-size: 1rem;
   line-height: 1.3;
 }
@@ -153,120 +185,299 @@ td { font-size:.92rem; line-height:1.45; }
   align-items: center;
   justify-content: center;
   margin-top: auto;
-  padding: 9px 13px;
-  border: 1px solid var(--accent);
+  padding: 10px 14px;
   border-radius: 9px;
   background: var(--accent);
   color: var(--accent-text);
   font-size: .8rem;
   font-weight: 700;
   text-decoration: none;
-  transition:
-    transform .18s ease,
-    opacity .18s ease;
+  transition: transform .2s ease, opacity .2s ease;
 }
 
 .drive-button:hover {
-  transform: translateY(-1px);
+  transform: translateY(-2px);
   opacity: .88;
 }
 
-.drive-button:focus-visible {
-  outline: 2px solid var(--process);
-  outline-offset: 3px;
+/* =========================================
+   NAVEGACION
+   ========================================= */
+
+.section-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 18px;
 }
 
-
-/* =========================================================
-   DOCUMENTOS - CELULAR
-   ========================================================= */
-
-@media (max-width: 650px) {
-
-  .drive-links {
-    grid-template-columns: 1fr;
-  }
-
-  .drive-card {
-    padding: 17px;
-  }
-
-  .drive-icon {
-    flex-basis: 44px;
-    width: 44px;
-    height: 44px;
-    font-size: 1.3rem;
-  }
-
-  .drive-button {
-    width: 100%;
-  }
+.section-button {
+  appearance: none;
+  border: 1px solid var(--border);
+  background: var(--card-2);
+  color: var(--text);
+  border-radius: 10px;
+  padding: 11px 15px;
+  font: inherit;
+  font-size: .9rem;
+  font-weight: 650;
+  cursor: pointer;
+  transition: transform .2s ease, border-color .2s ease;
 }
+
+.section-button:hover {
+  transform: translateY(-2px);
+  border-color: #52525b;
+}
+
+.section-button.active {
+  background: var(--accent);
+  color: var(--accent-text);
+  border-color: var(--accent);
+}
+
+.current-section {
+  margin: 34px 0 16px;
+}
+
+.current-section h2 {
+  margin: 0;
+  font-size: 1.65rem;
 }
 
 /* =========================================
-   RESPONSABLES
+   PROGRESO
    ========================================= */
 
+.progress-card {
+  padding: 24px;
+}
+
+.progress-top {
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.progress-top h3 {
+  margin: 0;
+  font-size: 1.08rem;
+}
+
+.percent {
+  font-size: 2rem;
+  letter-spacing: -.04em;
+}
+
+.progress-track {
+  width: 100%;
+  height: 10px;
+  margin-top: 20px;
+  border-radius: 999px;
+  background: #27272a;
+  overflow: hidden;
+}
+
+.progress-bar {
+  height: 100%;
+  width: 0;
+  border-radius: inherit;
+  background: var(--accent);
+  transition: width .35s ease;
+}
+
+.stats {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 12px;
+  margin-top: 22px;
+}
+
+.stats div {
+  min-width: 0;
+  padding: 12px;
+  border-radius: 12px;
+  background: var(--card-2);
+}
+
+.stats span {
+  display: block;
+  font-size: 1.3rem;
+  font-weight: 750;
+}
+
+.stats small {
+  display: block;
+  margin-top: 3px;
+  color: var(--muted);
+  font-size: .78rem;
+}
+
+/* =========================================
+   TABLA DE ACTIVIDADES - COMPUTADORA
+   ========================================= */
+
+.activities-card {
+  margin-top: 28px;
+  overflow: hidden;
+}
+
+.activities-heading {
+  padding: 22px 22px 17px;
+}
+
+.count-badge {
+  color: var(--muted);
+  font-size: .82rem;
+}
+
+.table-wrap {
+  width: 100%;
+  overflow-x: auto;
+}
+
+.activities-card table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.activities-card th {
+  color: var(--muted);
+  background: #0e0e11;
+  font-size: .75rem;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+}
+
+.activities-card th,
+.activities-card td {
+  padding: 15px 18px;
+  text-align: left;
+  border-top: 1px solid var(--border);
+  vertical-align: middle;
+}
+
+.activities-card td {
+  font-size: .92rem;
+  line-height: 1.45;
+}
+
+.number-col {
+  width: 64px;
+}
+
 .responsible-col {
-  min-width: 130px;
+  width: 150px;
+}
+
+.status-col {
+  width: 150px;
 }
 
 .responsible {
   display: inline-flex;
   align-items: center;
+  max-width: 100%;
   padding: 7px 11px;
+  border: 1px solid #363640;
   border-radius: 999px;
   background: #23232b;
-  border: 1px solid #363640;
-  color: #f4f4f5;
+  color: var(--text);
   font-size: .8rem;
-  font-weight: 600;
+  font-weight: 650;
+  overflow-wrap: anywhere;
+}
+
+.status {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
   white-space: nowrap;
+  font-size: .8rem;
+  font-weight: 700;
+}
+
+.status::before {
+  content: "";
+  flex: 0 0 8px;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: currentColor;
+}
+
+.status-pending {
+  color: var(--pending);
+}
+
+.status-process {
+  color: var(--process);
+}
+
+.status-complete {
+  color: var(--complete);
 }
 
 /* =========================================
-   ANIMACIONES SUAVES
+   MENSAJES
    ========================================= */
 
-html {
-  scroll-behavior: smooth;
+.empty {
+  margin: 0;
+  padding: 28px 22px;
+  color: var(--muted);
+  text-align: center;
 }
 
-button, a, .drive-card {
-  -webkit-tap-highlight-color: transparent;
-  transition:
-    transform .35s ease,
-    background-color .35s ease,
-    border-color .35s ease,
-    box-shadow .35s ease,
-    opacity .35s ease;
+.message {
+  margin: 20px 0;
+  padding: 16px 18px;
+  border: 1px solid #7f1d1d;
+  background: #220e12;
+  color: #fecaca;
+  border-radius: 12px;
+  line-height: 1.5;
 }
 
-.section-button:hover,
-.drive-button:hover {
-  transform: translateY(-3px);
+.loading {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 22px 2px;
+  color: var(--muted);
 }
 
-.section-button:active,
-.drive-button:active {
-  transform: scale(.97);
+.spinner {
+  width: 18px;
+  height: 18px;
+  border: 2px solid #3f3f46;
+  border-top-color: var(--text);
+  border-radius: 50%;
+  animation: spin .75s linear infinite;
 }
 
-.drive-card:hover {
-  transform: translateY(-3px);
-  border-color: #52525b;
+.hidden {
+  display: none !important;
 }
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* =========================================
+   ANIMACIONES
+   ========================================= */
 
 .progress-card,
 .activities-card {
-  animation: fadeUp .65s ease both;
+  animation: fadeUp .55s ease both;
 }
 
 @keyframes fadeUp {
   from {
     opacity: 0;
-    transform: translateY(14px);
+    transform: translateY(12px);
   }
   to {
     opacity: 1;
@@ -283,61 +494,48 @@ button, a, .drive-card {
     width: calc(100% - 28px);
   }
 
-  .table-wrap {
-    overflow-x: auto;
-    -webkit-overflow-scrolling: touch;
-  }
-
-  table {
-    min-width: 680px;
+  .drive-links {
+    grid-template-columns: 1fr;
   }
 }
 
 /* =========================================
-   DISEÑO PARA CELULARES
+   CELULARES - TARJETAS SIN SCROLL HORIZONTAL
    ========================================= */
 
 @media (max-width: 650px) {
+
   .container {
     width: calc(100% - 24px);
     padding: 28px 0 55px;
   }
 
-  .hero {
-    margin-bottom: 24px;
+  .panel,
+  .progress-card {
+    padding: 17px;
   }
 
   h1 {
     font-size: clamp(2rem, 9vw, 2.7rem);
-    line-height: 1.08;
   }
 
   .subtitle {
     font-size: .92rem;
-    line-height: 1.6;
-  }
-
-  .panel,
-  .progress-card {
-    padding: 17px;
-    border-radius: 16px;
   }
 
   .section-buttons {
     display: grid;
-    grid-template-columns: 1fr;
-    gap: 10px;
+    grid-template-columns: minmax(0, 1fr);
   }
 
   .section-button {
     width: 100%;
     text-align: left;
     padding: 13px 15px;
-    border-radius: 12px;
   }
 
   .drive-links {
-    grid-template-columns: 1fr;
+    grid-template-columns: minmax(0, 1fr);
     gap: 12px;
   }
 
@@ -346,54 +544,132 @@ button, a, .drive-card {
   }
 
   .drive-button {
-    min-height: 44px;
     width: 100%;
+    min-height: 44px;
   }
 
-  .progress-top {
-    align-items: center;
+  .stats {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 9px;
   }
 
   .percent {
     font-size: 1.7rem;
   }
 
-  .stats {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 9px;
-  }
-
-  .stats div {
-    padding: 12px;
-  }
-
+  /* Evitar que la tabla fuerce 680px */
   .activities-card {
-    border-radius: 16px;
+    width: 100%;
+    min-width: 0;
+    overflow: hidden;
   }
 
   .activities-heading {
     padding: 17px;
   }
 
-  .table-wrap {
-    overflow-x: auto;
-    -webkit-overflow-scrolling: touch;
+  .activities-card .table-wrap {
+    width: 100%;
+    overflow: visible;
   }
 
-  table {
-    min-width: 680px;
+  .activities-card table {
+    display: block;
+    width: 100%;
+    min-width: 0;
+    border-collapse: separate;
   }
 
-  th, td {
-    padding: 13px 12px;
+  .activities-card thead {
+    display: none;
   }
 
-  td {
-    font-size: .86rem;
+  .activities-card tbody {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    width: 100%;
+    padding: 14px;
   }
 
-  .responsible-col {
-    min-width: 130px;
+  /* Cada fila es una tarjeta */
+  .activities-card tbody tr {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 12px;
+    width: 100%;
+    min-width: 0;
+    padding: 16px;
+    background: #19191f;
+    border: 1px solid #303039;
+    border-radius: 14px;
+  }
+
+  .activities-card tbody td {
+    display: block;
+    width: auto;
+    min-width: 0;
+    padding: 0;
+    border: 0;
+    overflow-wrap: anywhere;
+  }
+
+  /* Numero */
+  .activities-card tbody td:nth-child(1) {
+    grid-column: 1;
+    grid-row: 1;
+    color: var(--muted);
+    font-size: .76rem;
+    font-weight: 700;
+  }
+
+  .activities-card tbody td:nth-child(1)::before {
+    content: "ACTIVIDAD ";
+  }
+
+  /* Titulo completo */
+  .activities-card tbody td:nth-child(2) {
+    grid-column: 1 / -1;
+    grid-row: 2;
+    font-size: .96rem;
+    font-weight: 650;
+    line-height: 1.55;
+  }
+
+  /* Responsable */
+  .activities-card tbody td:nth-child(3) {
+    grid-column: 1 / -1;
+    grid-row: 3;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 8px;
+    padding-top: 12px;
+    border-top: 1px solid #303039;
+  }
+
+  .activities-card tbody td:nth-child(3)::before {
+    content: "Responsable";
+    color: var(--muted);
+    font-size: .82rem;
+  }
+
+  .activities-card .responsible {
+    white-space: normal;
+    text-align: right;
+  }
+
+  /* Estado */
+  .activities-card tbody td:nth-child(4) {
+    grid-column: 2;
+    grid-row: 1;
+    text-align: right;
+  }
+
+  .activities-card .status {
+    font-size: .75rem;
+    white-space: nowrap;
   }
 }
 
@@ -412,137 +688,3 @@ button, a, .drive-card {
     transition-duration: .01ms !important;
   }
 }
-
-/* ==============================================
-   CHECKLIST RESPONSIVE - DISEÑO PARA CELULARES
-   ============================================== */
-
-@media (max-width: 650px) {
-
-  /* Eliminar desplazamiento horizontal */
-  .activities-card {
-    width: 100%;
-    min-width: 0;
-    overflow: hidden;
-  }
-
-  .table-wrap {
-    width: 100%;
-    overflow: visible;
-  }
-
-  /* Convertir tabla en tarjetas */
-  .activities-card table {
-    display: block;
-    width: 100%;
-    min-width: 0;
-  }
-
-  .activities-card thead {
-    display: none;
-  }
-
-  .activities-card tbody {
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-    padding: 14px;
-  }
-
-  .activities-card tbody tr {
-    display: grid;
-    grid-template-columns: minmax(0, 1fr) auto;
-    gap: 12px;
-    width: 100%;
-    padding: 16px;
-    background: #19191f;
-    border: 1px solid #303039;
-    border-radius: 14px;
-  }
-
-  .activities-card tbody td {
-    display: block;
-    min-width: 0;
-    width: auto;
-    padding: 0;
-    border: 0;
-    overflow-wrap: anywhere;
-  }
-
-  /* Número de actividad */
-  .activities-card tbody td:nth-child(1) {
-    grid-column: 1;
-    grid-row: 1;
-    color: #a1a1aa;
-    font-size: .76rem;
-    font-weight: 700;
-  }
-
-  .activities-card tbody td:nth-child(1)::before {
-    content: "ACTIVIDAD ";
-  }
-
-  /* Nombre completo de la actividad */
-  .activities-card tbody td:nth-child(2) {
-    grid-column: 1 / -1;
-    grid-row: 2;
-    font-size: .96rem;
-    font-weight: 650;
-    line-height: 1.55;
-    color: #f5f5f7;
-  }
-
-  /* Responsable */
-  .activities-card tbody td:nth-child(3) {
-    grid-column: 1 / -1;
-    grid-row: 3;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    flex-wrap: wrap;
-    gap: 8px;
-    padding-top: 12px;
-    border-top: 1px solid #303039;
-  }
-
-  .activities-card tbody td:nth-child(3)::before {
-    content: "Responsable";
-    color: #a1a1aa;
-    font-size: .82rem;
-  }
-
-  .activities-card .responsible {
-    white-space: normal;
-    max-width: 100%;
-    text-align: right;
-    overflow-wrap: anywhere;
-  }
-
-  /* Estado en la parte superior derecha */
-  .activities-card tbody td:nth-child(4) {
-    grid-column: 2;
-    grid-row: 1;
-    text-align: right;
-  }
-
-  .activities-card .status {
-    font-size: .75rem;
-    white-space: nowrap;
-  }
-
-  /* Espaciado general */
-  .activities-heading {
-    padding: 17px;
-  }
-
-  .activities-card tbody tr {
-    transition:
-      transform .2s ease,
-      border-color .2s ease;
-  }
-
-  .activities-card tbody tr:active {
-    transform: scale(.99);
-  }
-}
-
