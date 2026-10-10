@@ -413,3 +413,136 @@ button, a, .drive-card {
   }
 }
 
+/* ==============================================
+   CHECKLIST RESPONSIVE - DISEÑO PARA CELULARES
+   ============================================== */
+
+@media (max-width: 650px) {
+
+  /* Eliminar desplazamiento horizontal */
+  .activities-card {
+    width: 100%;
+    min-width: 0;
+    overflow: hidden;
+  }
+
+  .table-wrap {
+    width: 100%;
+    overflow: visible;
+  }
+
+  /* Convertir tabla en tarjetas */
+  .activities-card table {
+    display: block;
+    width: 100%;
+    min-width: 0;
+  }
+
+  .activities-card thead {
+    display: none;
+  }
+
+  .activities-card tbody {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    padding: 14px;
+  }
+
+  .activities-card tbody tr {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 12px;
+    width: 100%;
+    padding: 16px;
+    background: #19191f;
+    border: 1px solid #303039;
+    border-radius: 14px;
+  }
+
+  .activities-card tbody td {
+    display: block;
+    min-width: 0;
+    width: auto;
+    padding: 0;
+    border: 0;
+    overflow-wrap: anywhere;
+  }
+
+  /* Número de actividad */
+  .activities-card tbody td:nth-child(1) {
+    grid-column: 1;
+    grid-row: 1;
+    color: #a1a1aa;
+    font-size: .76rem;
+    font-weight: 700;
+  }
+
+  .activities-card tbody td:nth-child(1)::before {
+    content: "ACTIVIDAD ";
+  }
+
+  /* Nombre completo de la actividad */
+  .activities-card tbody td:nth-child(2) {
+    grid-column: 1 / -1;
+    grid-row: 2;
+    font-size: .96rem;
+    font-weight: 650;
+    line-height: 1.55;
+    color: #f5f5f7;
+  }
+
+  /* Responsable */
+  .activities-card tbody td:nth-child(3) {
+    grid-column: 1 / -1;
+    grid-row: 3;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 8px;
+    padding-top: 12px;
+    border-top: 1px solid #303039;
+  }
+
+  .activities-card tbody td:nth-child(3)::before {
+    content: "Responsable";
+    color: #a1a1aa;
+    font-size: .82rem;
+  }
+
+  .activities-card .responsible {
+    white-space: normal;
+    max-width: 100%;
+    text-align: right;
+    overflow-wrap: anywhere;
+  }
+
+  /* Estado en la parte superior derecha */
+  .activities-card tbody td:nth-child(4) {
+    grid-column: 2;
+    grid-row: 1;
+    text-align: right;
+  }
+
+  .activities-card .status {
+    font-size: .75rem;
+    white-space: nowrap;
+  }
+
+  /* Espaciado general */
+  .activities-heading {
+    padding: 17px;
+  }
+
+  .activities-card tbody tr {
+    transition:
+      transform .2s ease,
+      border-color .2s ease;
+  }
+
+  .activities-card tbody tr:active {
+    transform: scale(.99);
+  }
+}
+
