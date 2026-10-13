@@ -1,0 +1,17 @@
+{
+  "fps": 30,
+  "ancho": 1080,
+  "alto": 1920,
+  "segmentos": [
+    { "id": "gancho", "tipo": "video", "desde": 5.0, "hasta": 6.2, "velocidad": 1, "entrada": "flash", "golpes": [0, 18], "zoom": [1.3, 1.08], "foco": [45, 40], "audio": "original" },
+    { "id": "rebobinado", "tipo": "rebobinado", "desde": 0.0, "hasta": 6.2, "velocidad": 8, "frames": 24, "entrada": "glitch", "golpes": [], "zoom": [1.08, 1.0], "foco": [50, 50], "audio": "silencio" },
+    { "id": "tiron", "tipo": "video", "desde": 0.0, "hasta": 4.3, "velocidad": 1.1, "entrada": "zoomblur", "golpes": [22, 46, 70, 94], "zoom": [1.0, 1.12], "foco": [70, 45], "audio": "original" },
+    { "id": "barrido", "tipo": "video", "desde": 4.3, "hasta": 4.9, "velocidad": 1, "entrada": "barrido", "golpes": [], "zoom": [1.12, 1.0], "foco": [50, 50], "audio": "original" },
+    { "id": "revelacion", "tipo": "video", "desde": 4.9, "hasta": 6.5, "velocidad": 0.6, "entrada": "flash", "golpes": [0], "zoom": [1.0, 1.32], "foco": [45, 38], "audio": "lento" },
+    { "id": "salto", "tipo": "video", "desde": 6.5, "hasta": 7.4, "velocidad": 1, "entrada": "barrido", "golpes": [20], "zoom": [1.05, 1.15], "foco": [45, 45], "audio": "original" },
+    { "id": "congelado", "tipo": "congelado", "desde": 7.4, "hasta": 7.4, "velocidad": 1, "frames": 21, "entrada": "flash", "golpes": [0, 10], "zoom": [1.15, 1.45], "foco": [45, 42], "audio": "silencio" },
+    { "id": "orilla", "tipo": "video", "desde": 7.4, "hasta": 12.0, "velocidad": 1.25, "entrada": "zoomblur", "golpes": [16, 44, 72, 98], "zoom": [1.05, 1.16], "foco": [50, 50], "audio": "original" },
+    { "id": "juego", "tipo": "video", "desde": 15.0, "hasta": 21.0, "velocidad": 1.6, "frames": 112, "entrada": "glitch", "golpes": [28, 56, 84], "zoom": [1.0, 1.1], "foco": [50, 55], "audio": "original" },
+    { "id": "final", "tipo": "video", "desde": 22.0, "hasta": 25.5, "velocidad": 1, "entrada": "barrido", "golpes": [], "zoom": [1.0, 1.2], "foco": [70, 72], "audio": "original" }
+  ]
+}

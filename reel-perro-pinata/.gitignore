@@ -1,0 +1,10 @@
+node_modules
+dist
+.DS_Store
+.env
+
+# Material de video/audio: no se versiona (el video original es de terceros).
+public/fuente/*
+public/sfx/*
+public/banda-sonora.mp3
+out/*

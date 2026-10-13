@@ -1,0 +1,31 @@
+{
+  "name": "reel-perro-pinata",
+  "version": "1.0.0",
+  "description": "Edición viral (Facebook Reel) del video del perro y la piñata",
+  "repository": {},
+  "license": "UNLICENSED",
+  "private": true,
+  "dependencies": {
+    "@remotion/cli": "4.0.535",
+    "@remotion/media": "4.0.535",
+    "react": "19.2.3",
+    "react-dom": "19.2.3",
+    "remotion": "4.0.535"
+  },
+  "devDependencies": {
+    "@remotion/eslint-config-flat": "4.0.535",
+    "@types/react": "19.2.7",
+    "@types/web": "0.0.166",
+    "eslint": "9.39.5",
+    "prettier": "3.8.1",
+    "typescript": "5.9.3"
+  },
+  "scripts": {
+    "dev": "remotion studio",
+    "audio": "python3 scripts/preparar-medios.py",
+    "render": "remotion render ReelPerroPinata out/reel-perro-pinata.mp4 --codec=h264 --crf=16 && npm run exportar",
+    "typecheck": "tsc --noEmit",
+    "lint": "eslint src && tsc",
+    "exportar": "ffmpeg -y -loglevel error -i out/reel-perro-pinata.mp4 -c:v libx264 -preset slow -crf 20 -profile:v high -pix_fmt yuv420p -maxrate 12M -bufsize 24M -movflags +faststart -af loudnorm=I=-14:TP=-1:LRA=11 -c:a aac -b:a 192k -ar 48000 out/reel-perro-pinata-facebook.mp4"
+  }
+}
