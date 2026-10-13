@@ -26,6 +26,6 @@
     "render": "remotion render ReelPerroPinata out/reel-perro-pinata.mp4 --codec=h264 --crf=16 && npm run exportar",
     "typecheck": "tsc --noEmit",
     "lint": "eslint src && tsc",
-    "exportar": "ffmpeg -y -loglevel error -i out/reel-perro-pinata.mp4 -c:v libx264 -preset slow -crf 20 -profile:v high -pix_fmt yuv420p -maxrate 12M -bufsize 24M -movflags +faststart -af loudnorm=I=-14:TP=-1:LRA=11 -c:a aac -b:a 192k -ar 48000 out/reel-perro-pinata-facebook.mp4"
+    "exportar": "ffmpeg -y -loglevel error -i out/reel-perro-pinata.mp4 -c:v libx264 -preset slow -b:v 9500k -profile:v high -pix_fmt yuv420p -maxrate 11M -bufsize 20M -movflags +faststart -af loudnorm=I=-14:TP=-1:LRA=11 -c:a aac -b:a 192k -ar 48000 out/reel-perro-pinata-facebook.mp4"
   }
 }
