@@ -1,0 +1,16 @@
+{
+  "fps": 30,
+  "ancho": 1080,
+  "alto": 1920,
+  "segmentos": [
+    {"id": "gancho", "tipo": "video", "desde": 10.9, "hasta": 11.9, "velocidad": 0.5, "entrada": "corte", "traslape": 0, "zoom": [1.3, 1.7], "foco": [[55, 48], [55, 48]], "golpes": [], "audio": "lento"},
+    {"id": "patada", "tipo": "video", "desde": 11.9, "hasta": 12.0, "velocidad": 0.25, "frames": 12, "entrada": "corte", "traslape": 0, "zoom": [1.7, 1.75], "foco": [[55, 48], [55, 48]], "golpes": [], "audio": "silencio"},
+    {"id": "congelado", "tipo": "congelado", "desde": 12.0, "hasta": 12.0, "velocidad": 1, "frames": 21, "entrada": "flashsuave", "traslape": 0, "zoom": [1.75, 1.85], "foco": [[55, 48], [55, 48]], "golpes": [], "audio": "silencio"},
+    {"id": "rebobinado", "tipo": "rebobinado", "desde": 0.0, "hasta": 12.0, "velocidad": 15, "frames": 24, "entrada": "corte", "traslape": 0, "zoom": [1.85, 1.25], "foco": [[55, 48], [50, 52]], "golpes": [], "audio": "silencio"},
+    {"id": "inicio", "tipo": "video", "desde": 0.0, "hasta": 4.0, "velocidad": 1, "entrada": "zoomthrough", "traslape": 0, "zoom": [1.25, 1.3], "foco": [[50, 52], [52, 48]], "golpes": [], "audio": "original"},
+    {"id": "pases", "tipo": "video", "desde": 4.0, "hasta": 10.9, "velocidad": 1.35, "frames": 153, "entrada": "disolver", "traslape": 8, "zoom": [1.3, 1.35], "foco": [[55, 48], [55, 45]], "golpes": [], "audio": "original"},
+    {"id": "tension", "tipo": "video", "desde": 10.9, "hasta": 11.9, "velocidad": 0.6, "entrada": "disolver", "traslape": 6, "zoom": [1.35, 1.8], "foco": [[55, 48], [55, 48]], "golpes": [], "audio": "lento"},
+    {"id": "penal", "tipo": "video", "desde": 11.9, "hasta": 13.4, "velocidad": 0.45, "entrada": "corte", "traslape": 0, "zoom": [1.8, 2.0], "foco": [[55, 48], [45, 38]], "golpes": [73], "audio": "lento"},
+    {"id": "final", "tipo": "video", "desde": 13.4, "hasta": 15.4, "velocidad": 1, "entrada": "disolver", "traslape": 6, "zoom": [1.7, 1.15], "foco": [[48, 40], [50, 50]], "golpes": [], "audio": "original"}
+  ]
+}
