@@ -12,39 +12,43 @@
 
     <ul class="tpc__products">
       {%- for i in (1..2) -%}
-        {%- liquid
-          if i == 1
-            assign product = section.settings.product_1
-          else
-            assign product = section.settings.product_2
-          endif
-        -%}
-        {%- if product != blank -%}
-          {%- assign variant = product.selected_or_first_available_variant -%}
+        {%- if i == 1 -%}
+          {%- assign item = section.settings.product_1 -%}
+        {%- else -%}
+          {%- assign item = section.settings.product_2 -%}
+        {%- endif -%}
+        {%- if item != blank -%}
+          {%- assign variant = item.selected_or_first_available_variant -%}
           <li class="tpc__product" data-tpc-product>
             <div class="tpc__thumb">
-              {%- assign image = variant.featured_image | default: product.featured_image -%}
+              {%- assign image = variant.featured_image | default: item.featured_image -%}
               {%- if image -%}
-                {{ image | image_url: width: 160 | image_tag: alt: product.title, loading: 'lazy', data-tpc-image: '' }}
+                <img src="{{ image | image_url: width: 160 }}" alt="{{ item.title | escape }}" width="64" height="64" loading="lazy">
               {%- endif -%}
               <span class="tpc__badge" data-tpc-badge>1</span>
             </div>
 
             <div class="tpc__info">
-              <p class="tpc__name">{{ product.title }}</p>
+              <p class="tpc__name">{{ item.title }}</p>
 
-              {%- if product.has_only_default_variant -%}
+              {%- if item.has_only_default_variant -%}
                 <input type="hidden" data-tpc-variant value="{{ variant.id }}"
                   data-price="{{ variant.price }}" data-compare="{{ variant.compare_at_price }}">
               {%- else -%}
-                <select class="tpc__select" data-tpc-variant aria-label="{{ product.title }}">
-                  {%- for v in product.variants -%}
-                    <option value="{{ v.id }}"
+                <select class="tpc__select" data-tpc-variant aria-label="{{ item.title | escape }}">
+                  {%- for v in item.variants -%}
+                    {%- assign v_image = '' -%}
+                    {%- if v.featured_image -%}
+                      {%- assign v_image = v.featured_image | image_url: width: 160 -%}
+                    {%- endif -%}
+                    <option
+                      value="{{ v.id }}"
                       data-price="{{ v.price }}"
                       data-compare="{{ v.compare_at_price }}"
-                      {% if v.featured_image %}data-image="{{ v.featured_image | image_url: width: 160 }}"{% endif %}
+                      data-image="{{ v_image }}"
                       {% unless v.available %}disabled{% endunless %}
-                      {% if v.id == variant.id %}selected{% endif %}>
+                      {% if v.id == variant.id %}selected{% endif %}
+                    >
                       {{ v.title }}{% unless v.available %} — Agotado{% endunless %}
                     </option>
                   {%- endfor -%}
