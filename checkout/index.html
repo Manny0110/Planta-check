@@ -1,0 +1,250 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Checkout | Mi Tienda</title>
+  <link rel="stylesheet" href="checkout.css" />
+</head>
+
+<body>
+
+  <!-- ENCABEZADO -->
+  <header class="top-bar">
+    <div class="top-bar-inner">
+      <a class="logo" href="#" id="store-name">Mi Tienda</a>
+      <a class="cart-link" href="#" aria-label="Carrito">
+        <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.6">
+          <path d="M3 4h2l2.4 11.2a1 1 0 0 0 1 .8h9.2a1 1 0 0 0 1-.8L20 8H6.2" />
+          <circle cx="9" cy="20" r="1.3" /><circle cx="17" cy="20" r="1.3" />
+        </svg>
+      </a>
+    </div>
+  </header>
+
+  <!-- RESUMEN EN MOVIL (desplegable) -->
+  <button type="button" class="summary-toggle" id="summary-toggle" aria-expanded="false" aria-controls="order-summary">
+    <span class="summary-toggle-label">
+      <span id="summary-toggle-text">Mostrar resumen del pedido</span>
+      <svg class="chevron" viewBox="0 0 14 14" width="12" height="12" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M2 5l5 5 5-5" /></svg>
+    </span>
+    <strong class="summary-toggle-total" data-total></strong>
+  </button>
+
+  <div class="checkout">
+
+    <!-- COLUMNA IZQUIERDA: FORMULARIO -->
+    <main class="main-col">
+      <form id="checkout-form" novalidate>
+
+        <!-- Pago express -->
+        <section class="express">
+          <p class="express-title">Pago exprés</p>
+          <div class="express-buttons">
+            <button type="button" class="express-btn paypal">PayPal</button>
+            <button type="button" class="express-btn gpay">G Pay</button>
+          </div>
+          <div class="divider"><span>O</span></div>
+        </section>
+
+        <!-- Contacto -->
+        <section class="block">
+          <div class="block-head">
+            <h2>Contacto</h2>
+            <a href="#" class="link small">Iniciar sesión</a>
+          </div>
+          <div class="field">
+            <input type="email" id="email" name="email" placeholder=" " autocomplete="email" required />
+            <label for="email">Correo electrónico o número de teléfono</label>
+          </div>
+          <label class="check">
+            <input type="checkbox" name="news" checked />
+            <span>Enviarme novedades y ofertas por correo electrónico</span>
+          </label>
+        </section>
+
+        <!-- Entrega -->
+        <section class="block">
+          <h2>Entrega</h2>
+
+          <div class="field select">
+            <select id="country" name="country" autocomplete="country">
+              <option>Estados Unidos</option>
+              <option>México</option>
+              <option>Colombia</option>
+              <option>Venezuela</option>
+              <option>España</option>
+            </select>
+            <label for="country">País / Región</label>
+          </div>
+
+          <div class="row">
+            <div class="field">
+              <input type="text" id="first-name" name="firstName" placeholder=" " autocomplete="given-name" />
+              <label for="first-name">Nombre (opcional)</label>
+            </div>
+            <div class="field">
+              <input type="text" id="last-name" name="lastName" placeholder=" " autocomplete="family-name" required />
+              <label for="last-name">Apellidos</label>
+            </div>
+          </div>
+
+          <div class="field">
+            <input type="text" id="address" name="address" placeholder=" " autocomplete="address-line1" required />
+            <label for="address">Dirección</label>
+          </div>
+
+          <div class="field">
+            <input type="text" id="address2" name="address2" placeholder=" " autocomplete="address-line2" />
+            <label for="address2">Apartamento, local, etc. (opcional)</label>
+          </div>
+
+          <div class="row three">
+            <div class="field">
+              <input type="text" id="city" name="city" placeholder=" " autocomplete="address-level2" required />
+              <label for="city">Ciudad</label>
+            </div>
+            <div class="field">
+              <input type="text" id="state" name="state" placeholder=" " autocomplete="address-level1" required />
+              <label for="state">Estado</label>
+            </div>
+            <div class="field">
+              <input type="text" id="zip" name="zip" placeholder=" " autocomplete="postal-code" required />
+              <label for="zip">Código postal</label>
+            </div>
+          </div>
+
+          <div class="field">
+            <input type="tel" id="phone" name="phone" placeholder=" " autocomplete="tel" />
+            <label for="phone">Teléfono (opcional)</label>
+          </div>
+
+          <label class="check">
+            <input type="checkbox" name="saveInfo" />
+            <span>Guardar mi información y consultar más rápidamente la próxima vez</span>
+          </label>
+        </section>
+
+        <!-- Metodo de envio -->
+        <section class="block">
+          <h3>Métodos de envío</h3>
+          <div id="shipping-empty" class="muted-box">
+            Ingresa tu dirección de envío para ver los métodos disponibles.
+          </div>
+          <div id="shipping-options" class="option-group" hidden></div>
+        </section>
+
+        <!-- Pago -->
+        <section class="block">
+          <h2>Pago</h2>
+          <p class="hint">Todas las transacciones son seguras y están encriptadas.</p>
+
+          <div class="option-group">
+            <label class="option">
+              <input type="radio" name="payment" value="card" checked />
+              <span class="option-label">Tarjeta de crédito</span>
+              <span class="cards">
+                <span class="card-badge visa">VISA</span>
+                <span class="card-badge mc">MC</span>
+                <span class="card-badge amex">AMEX</span>
+              </span>
+            </label>
+            <div class="option-body" data-for="card">
+              <!-- Solo interfaz: conecta aquí tu pasarela (Stripe, Shopify Payments, etc.).
+                   Estos datos nunca se envían ni se guardan desde esta página. -->
+              <div class="field icon-lock">
+                <input type="text" id="cc-number" inputmode="numeric" placeholder=" " autocomplete="off" />
+                <label for="cc-number">Número de tarjeta</label>
+              </div>
+              <div class="row">
+                <div class="field">
+                  <input type="text" id="cc-exp" inputmode="numeric" placeholder=" " autocomplete="off" />
+                  <label for="cc-exp">Fecha de vencimiento (MM / AA)</label>
+                </div>
+                <div class="field">
+                  <input type="text" id="cc-cvc" inputmode="numeric" placeholder=" " autocomplete="off" />
+                  <label for="cc-cvc">Código de seguridad</label>
+                </div>
+              </div>
+              <div class="field">
+                <input type="text" id="cc-name" placeholder=" " autocomplete="off" />
+                <label for="cc-name">Nombre del titular</label>
+              </div>
+              <label class="check">
+                <input type="checkbox" id="same-billing" checked />
+                <span>Usar la dirección de envío como dirección de facturación</span>
+              </label>
+            </div>
+
+            <label class="option">
+              <input type="radio" name="payment" value="paypal" />
+              <span class="option-label">PayPal</span>
+            </label>
+            <div class="option-body center" data-for="paypal" hidden>
+              Después de hacer clic en "Pagar con PayPal", serás redirigido a PayPal para completar tu compra de forma segura.
+            </div>
+          </div>
+        </section>
+
+        <!-- Recordarme -->
+        <section class="block">
+          <h3>Recordarme</h3>
+          <div class="option-group">
+            <label class="option">
+              <input type="checkbox" name="remember" />
+              <span class="option-label">Guardar mi información para pagar más rápido</span>
+            </label>
+          </div>
+        </section>
+
+        <button type="submit" class="pay-btn" id="pay-btn">Pagar ahora</button>
+        <p class="form-error" id="form-error" role="alert" hidden></p>
+
+        <footer class="policies">
+          <a href="#">Política de reembolso</a>
+          <a href="#">Envío</a>
+          <a href="#">Política de privacidad</a>
+          <a href="#">Términos del servicio</a>
+          <a href="#">Contacto</a>
+        </footer>
+      </form>
+    </main>
+
+    <!-- COLUMNA DERECHA: RESUMEN DEL PEDIDO -->
+    <aside class="side-col" id="order-summary">
+      <div class="side-inner">
+        <ul class="products" id="product-list"></ul>
+
+        <form class="discount" id="discount-form">
+          <div class="field">
+            <input type="text" id="discount" placeholder=" " autocomplete="off" />
+            <label for="discount">Código de descuento o tarjeta de regalo</label>
+          </div>
+          <button type="submit" class="apply-btn" id="apply-btn" disabled>Aplicar</button>
+        </form>
+        <p class="discount-msg" id="discount-msg" hidden></p>
+
+        <dl class="totals">
+          <div><dt>Subtotal · <span id="item-count"></span></dt><dd id="subtotal"></dd></div>
+          <div id="discount-row" hidden><dt>Descuento <span class="tag" id="discount-tag"></span></dt><dd id="discount-amount"></dd></div>
+          <div><dt>Envío</dt><dd id="shipping" class="muted">Ingresa la dirección de envío</dd></div>
+          <div><dt>Impuestos estimados</dt><dd id="taxes"></dd></div>
+          <div class="grand"><dt>Total</dt><dd><span class="currency" id="currency"></span> <strong data-total></strong></dd></div>
+        </dl>
+      </div>
+    </aside>
+  </div>
+
+  <!-- CONFIRMACION -->
+  <div class="modal" id="thanks" hidden>
+    <div class="modal-card">
+      <div class="check-circle">✓</div>
+      <h2>¡Gracias por tu pedido!</h2>
+      <p id="thanks-text"></p>
+      <button type="button" class="pay-btn" id="thanks-close">Volver a la tienda</button>
+    </div>
+  </div>
+
+  <script src="checkout.js"></script>
+</body>
+</html>
