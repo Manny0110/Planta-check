@@ -1,0 +1,205 @@
+{
+  "sections": {
+    "wap": {
+      "type": "WAP",
+      "blocks": {
+        "barra_1": {
+          "type": "barra",
+          "settings": {
+            "text": "SPF 50+"
+          }
+        },
+        "barra_2": {
+          "type": "barra",
+          "settings": {
+            "text": "Sin residuo blanco"
+          }
+        },
+        "barra_3": {
+          "type": "barra",
+          "settings": {
+            "text": "No ensucia las manos"
+          }
+        },
+        "barra_4": {
+          "type": "barra",
+          "settings": {
+            "text": "Cabe en tu bolsillo"
+          }
+        },
+        "barra_5": {
+          "type": "barra",
+          "settings": {
+            "text": "Acabado sedoso"
+          }
+        },
+        "barra_6": {
+          "type": "barra",
+          "settings": {
+            "text": "Reaplica en segundos"
+          }
+        },
+        "tarjeta_7": {
+          "type": "tarjeta",
+          "settings": {
+            "icon": "☀️",
+            "title": "SPF 50+",
+            "text": "Protección alta para tu rutina diaria bajo el sol."
+          }
+        },
+        "tarjeta_8": {
+          "type": "tarjeta",
+          "settings": {
+            "icon": "🤍",
+            "title": "Sin residuo blanco",
+            "text": "Se funde con la piel y no deja la cara blanca."
+          }
+        },
+        "tarjeta_9": {
+          "type": "tarjeta",
+          "settings": {
+            "icon": "✋",
+            "title": "Manos limpias",
+            "text": "Formato en barra: lo aplicas sin tocarlo con los dedos."
+          }
+        },
+        "tarjeta_10": {
+          "type": "tarjeta",
+          "settings": {
+            "icon": "👜",
+            "title": "Va contigo",
+            "text": "20 g que caben en tu bolsillo, bolso o mochila."
+          }
+        },
+        "paso_11": {
+          "type": "paso",
+          "settings": {
+            "title": "Gira la base",
+            "text": "Sube la barra unos milímetros girando la rueda de abajo."
+          }
+        },
+        "paso_12": {
+          "type": "paso",
+          "settings": {
+            "title": "Desliza sobre la piel",
+            "text": "Pasa la barra 3 o 4 veces por rostro, cuello y zonas expuestas, 15 minutos antes de salir al sol."
+          }
+        },
+        "paso_13": {
+          "type": "paso",
+          "settings": {
+            "title": "Reaplica",
+            "text": "Vuelve a aplicar cada 2 horas, y después de nadar, sudar o secarte con toalla."
+          }
+        },
+        "comparacion_14": {
+          "type": "comparacion",
+          "settings": {
+            "feature": "No ensucia las manos",
+            "us": true,
+            "them": false
+          }
+        },
+        "comparacion_15": {
+          "type": "comparacion",
+          "settings": {
+            "feature": "Fácil de reaplicar fuera de casa",
+            "us": true,
+            "them": false
+          }
+        },
+        "comparacion_16": {
+          "type": "comparacion",
+          "settings": {
+            "feature": "Cabe en el bolsillo",
+            "us": true,
+            "them": false
+          }
+        },
+        "comparacion_17": {
+          "type": "comparacion",
+          "settings": {
+            "feature": "Sin riesgo de derrames en el bolso",
+            "us": true,
+            "them": false
+          }
+        },
+        "comparacion_18": {
+          "type": "comparacion",
+          "settings": {
+            "feature": "SPF 50+",
+            "us": true,
+            "them": true,
+            "them_note": "Depende de la marca"
+          }
+        },
+        "pregunta_19": {
+          "type": "pregunta",
+          "settings": {
+            "question": "¿Cómo se aplica?",
+            "answer": "<p>Gira la base para subir la barra unos milímetros. Deslízala 3 o 4 veces sobre la piel limpia y seca de rostro, cuello y zonas expuestas, unos 15 minutos antes de salir al sol.</p><p>Vuelve a aplicar cada 2 horas, y siempre después de nadar, sudar o secarte con toalla.</p>"
+          }
+        },
+        "pregunta_20": {
+          "type": "pregunta",
+          "settings": {
+            "question": "¿Cuánto tarda el envío?",
+            "answer": "<p>Preparamos tu pedido en 1 a 3 días hábiles. Después, la entrega tarda normalmente de 7 a 15 días hábiles, según tu ubicación.</p><p>Cuando tu pedido salga, te enviamos por correo el número de rastreo para que lo sigas en todo momento.</p>"
+          }
+        },
+        "pregunta_21": {
+          "type": "pregunta",
+          "settings": {
+            "question": "¿Puedo devolverlo?",
+            "answer": "<p>Sí. Tienes 30 días desde que recibes tu pedido para solicitar una devolución. Por higiene, el producto debe estar sin abrir y en su empaque original.</p><p>Si llegó dañado o recibiste algo incorrecto, escríbenos con tu número de pedido y una foto, y te enviamos un reemplazo o te devolvemos el dinero.</p>"
+          }
+        },
+        "pregunta_22": {
+          "type": "pregunta",
+          "settings": {
+            "question": "¿Deja la piel blanca?",
+            "answer": "<p>No. Está hecho para deslizarse de forma transparente, con un acabado sedoso que no deja residuo blanco.</p>"
+          }
+        },
+        "pregunta_23": {
+          "type": "pregunta",
+          "settings": {
+            "question": "¿Puedo usarlo sobre el maquillaje?",
+            "answer": "<p>Sí. Al ser en barra, puedes pasarlo suavemente sobre el maquillaje para reaplicar durante el día sin necesidad de lavarte la cara.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "barra_1",
+        "barra_2",
+        "barra_3",
+        "barra_4",
+        "barra_5",
+        "barra_6",
+        "tarjeta_7",
+        "tarjeta_8",
+        "tarjeta_9",
+        "tarjeta_10",
+        "paso_11",
+        "paso_12",
+        "paso_13",
+        "comparacion_14",
+        "comparacion_15",
+        "comparacion_16",
+        "comparacion_17",
+        "comparacion_18",
+        "pregunta_19",
+        "pregunta_20",
+        "pregunta_21",
+        "pregunta_22",
+        "pregunta_23"
+      ],
+      "settings": {
+        "product": "shopify://products/protector-solar-barra-spf-50"
+      }
+    }
+  },
+  "order": [
+    "wap"
+  ]
+}
