@@ -1,0 +1,972 @@
+{%- comment -%}
+  Pagina de un solo producto, inspirada en la estructura de una landing de suplementos:
+  hero, barra de beneficios, tarjetas, caja de compra, resenas, comparacion y preguntas.
+  Todo el contenido se edita desde el editor del tema (secciones y bloques).
+{%- endcomment -%}
+
+{%- assign product_item = section.settings.product -%}
+{%- assign variant = product_item.selected_or_first_available_variant -%}
+
+<div
+  class="wap"
+  style="--wap-accent: {{ section.settings.accent }}; --wap-soft: {{ section.settings.soft }}; --wap-dark: {{ section.settings.dark }};"
+  data-wap
+  data-currency="{{ cart.currency.iso_code }}"
+  data-locale="{{ request.locale.iso_code }}"
+>
+
+  {%- comment -%} ===== HERO ===== {%- endcomment -%}
+  <div class="wap-hero">
+    <div class="wap-hero__media">
+      {%- if section.settings.hero_image -%}
+        {{ section.settings.hero_image | image_url: width: 2000 | image_tag: loading: 'eager', sizes: '100vw', class: 'wap-hero__img' }}
+      {%- elsif product_item.featured_image -%}
+        {{ product_item.featured_image | image_url: width: 2000 | image_tag: loading: 'eager', sizes: '100vw', class: 'wap-hero__img' }}
+      {%- else -%}
+        {{ 'lifestyle-1' | placeholder_svg_tag: 'wap-hero__img' }}
+      {%- endif -%}
+    </div>
+    <div class="wap-wrap wap-hero__content">
+      <div class="wap-hero__box">
+        {%- if section.settings.rating_text != blank -%}
+          <p class="wap-rating"><span class="wap-stars">★★★★★</span> {{ section.settings.rating_text }}</p>
+        {%- endif -%}
+        <h1 class="wap-hero__title">{{ section.settings.heading }}</h1>
+        {%- if section.settings.subheading != blank -%}
+          <div class="wap-hero__text">{{ section.settings.subheading }}</div>
+        {%- endif -%}
+        <a class="wap-btn" href="#wap-comprar">{{ section.settings.hero_button }}</a>
+        <ul class="wap-checks">
+          {%- if section.settings.check_1 != blank -%}<li>{{ section.settings.check_1 }}</li>{%- endif -%}
+          {%- if section.settings.check_2 != blank -%}<li>{{ section.settings.check_2 }}</li>{%- endif -%}
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  {%- comment -%} ===== BARRA DE BENEFICIOS (marquesina) ===== {%- endcomment -%}
+  {%- capture bar_items -%}
+    {%- for block in section.blocks -%}
+      {%- if block.type == 'barra' -%}<span {{ block.shopify_attributes }}>{{ block.settings.text }}</span>{%- endif -%}
+    {%- endfor -%}
+  {%- endcapture -%}
+  {%- if bar_items != blank -%}
+    <div class="wap-bar" aria-label="Beneficios">
+      <div class="wap-bar__track">
+        <div class="wap-bar__group">{{ bar_items }}</div>
+        <div class="wap-bar__group" aria-hidden="true">{{ bar_items }}</div>
+      </div>
+    </div>
+  {%- endif -%}
+
+  {%- comment -%} ===== TARJETAS DE BENEFICIOS ===== {%- endcomment -%}
+  {%- capture cards -%}
+    {%- for block in section.blocks -%}
+      {%- if block.type == 'tarjeta' -%}
+        <div class="wap-card" {{ block.shopify_attributes }}>
+          {%- if block.settings.image -%}
+            {{ block.settings.image | image_url: width: 600 | image_tag: loading: 'lazy', sizes: '(min-width: 750px) 25vw, 70vw' }}
+          {%- else -%}
+            {{ 'image' | placeholder_svg_tag }}
+          {%- endif -%}
+          <span class="wap-card__label">{{ block.settings.title }} <span aria-hidden="true">→</span></span>
+        </div>
+      {%- endif -%}
+    {%- endfor -%}
+  {%- endcapture -%}
+  {%- if cards != blank -%}
+    <div class="wap-wrap wap-block">
+      <h2 class="wap-h2">{{ section.settings.cards_heading }}</h2>
+      <div class="wap-cards">{{ cards }}</div>
+    </div>
+  {%- endif -%}
+
+  {%- comment -%} ===== CAJA DE COMPRA ===== {%- endcomment -%}
+  <div class="wap-wrap wap-block" id="wap-comprar">
+    {%- if product_item == blank -%}
+      <p class="wap-empty">Elige tu producto en la configuración de esta sección.</p>
+    {%- else -%}
+      <div class="wap-buy">
+        <div class="wap-gallery">
+          <div class="wap-gallery__main">
+            {%- assign main_image = variant.featured_image | default: product_item.featured_image -%}
+            {%- if main_image -%}
+              {{ main_image | image_url: width: 1200 | image_tag: loading: 'lazy', sizes: '(min-width: 750px) 50vw, 100vw', data-wap-main: '' }}
+            {%- else -%}
+              {{ 'product-1' | placeholder_svg_tag }}
+            {%- endif -%}
+          </div>
+          {%- if product_item.images.size > 1 -%}
+            <div class="wap-gallery__thumbs">
+              {%- for image in product_item.images limit: 6 -%}
+                <button type="button" data-wap-thumb="{{ image | image_url: width: 1200 }}" aria-label="Ver imagen {{ forloop.index }}">
+                  {{ image | image_url: width: 160 | image_tag: loading: 'lazy', alt: '' }}
+                </button>
+              {%- endfor -%}
+            </div>
+          {%- endif -%}
+        </div>
+
+        <div class="wap-buy__info">
+          {%- if section.settings.buy_badge != blank -%}
+            <span class="wap-badge">{{ section.settings.buy_badge }}</span>
+          {%- endif -%}
+          <h2 class="wap-buy__title">{{ product_item.title }}</h2>
+          {%- if section.settings.rating_text != blank -%}
+            <p class="wap-rating"><span class="wap-stars">★★★★★</span> {{ section.settings.rating_text }}</p>
+          {%- endif -%}
+
+          <p class="wap-price">
+            <span data-wap-price>{{ variant.price | money }}</span>
+            <s data-wap-compare>{% if variant.compare_at_price > variant.price %}{{ variant.compare_at_price | money }}{% endif %}</s>
+          </p>
+
+          {%- if section.settings.buy_text != blank -%}
+            <div class="wap-buy__text">{{ section.settings.buy_text }}</div>
+          {%- endif -%}
+
+          {%- form 'product', product_item, class: 'wap-form', data-wap-form: '' -%}
+            {%- if product_item.has_only_default_variant -%}
+              <input type="hidden" name="id" value="{{ variant.id }}" data-wap-variant>
+            {%- else -%}
+              <label class="wap-label" for="wap-variant-{{ section.id }}">Opción</label>
+              <select id="wap-variant-{{ section.id }}" name="id" class="wap-select" data-wap-variant>
+                {%- for v in product_item.variants -%}
+                  {%- assign v_image = '' -%}
+                  {%- if v.featured_image -%}
+                    {%- assign v_image = v.featured_image | image_url: width: 1200 -%}
+                  {%- endif -%}
+                  <option
+                    value="{{ v.id }}"
+                    data-price="{{ v.price }}"
+                    data-compare="{{ v.compare_at_price }}"
+                    data-image="{{ v_image }}"
+                    {% unless v.available %}disabled{% endunless %}
+                    {% if v.id == variant.id %}selected{% endif %}
+                  >
+                    {{ v.title }}{% unless v.available %} — Agotado{% endunless %}
+                  </option>
+                {%- endfor -%}
+              </select>
+            {%- endif -%}
+
+            <div class="wap-qty">
+              <button type="button" data-wap-step="-1" aria-label="Quitar uno">−</button>
+              <input type="number" name="quantity" value="1" min="1" max="99" data-wap-qty aria-label="Cantidad">
+              <button type="button" data-wap-step="1" aria-label="Agregar uno">+</button>
+            </div>
+
+            <a class="wap-btn wap-btn--full" href="{{ routes.cart_url }}/{{ variant.id }}:1" data-wap-buy data-cart-url="{{ routes.cart_url }}">{{ section.settings.buy_button }}</a>
+            <button type="submit" class="wap-btn wap-btn--ghost wap-btn--full" {% unless variant.available %}disabled{% endunless %}>
+              Agregar al carrito
+            </button>
+          {%- endform -%}
+
+          <ul class="wap-checks wap-checks--dark">
+            {%- if section.settings.check_1 != blank -%}<li>{{ section.settings.check_1 }}</li>{%- endif -%}
+            {%- if section.settings.check_2 != blank -%}<li>{{ section.settings.check_2 }}</li>{%- endif -%}
+          </ul>
+        </div>
+      </div>
+    {%- endif -%}
+  </div>
+
+  {%- comment -%} ===== RESENAS ===== {%- endcomment -%}
+  {%- capture reviews -%}
+    {%- for block in section.blocks -%}
+      {%- if block.type == 'resena' and block.settings.text != blank -%}
+        <article class="wap-review" {{ block.shopify_attributes }}>
+          <div class="wap-review__head">
+            {%- if block.settings.image -%}
+              {{ block.settings.image | image_url: width: 120 | image_tag: loading: 'lazy', class: 'wap-review__avatar' }}
+            {%- endif -%}
+            <div>
+              <p class="wap-review__name">{{ block.settings.name }}</p>
+              {%- if block.settings.verified -%}<p class="wap-review__meta">Compra verificada</p>{%- endif -%}
+            </div>
+            <span class="wap-stars">{% for i in (1..block.settings.stars) %}★{% endfor %}</span>
+          </div>
+          {%- if block.settings.title != blank -%}<p class="wap-review__title">{{ block.settings.title }}</p>{%- endif -%}
+          <div class="wap-review__text">{{ block.settings.text }}</div>
+        </article>
+      {%- endif -%}
+    {%- endfor -%}
+  {%- endcapture -%}
+  {%- if reviews != blank -%}
+    <div class="wap-wrap wap-block">
+      <h2 class="wap-h2">{{ section.settings.reviews_heading }}</h2>
+      <div class="wap-reviews">{{ reviews }}</div>
+    </div>
+  {%- endif -%}
+
+  {%- comment -%} ===== COMPARACION ===== {%- endcomment -%}
+  {%- capture rows -%}
+    {%- for block in section.blocks -%}
+      {%- if block.type == 'comparacion' -%}
+        <div class="wap-compare__row" {{ block.shopify_attributes }}>
+          <div class="wap-compare__feature">{{ block.settings.feature }}</div>
+          <div class="wap-compare__us">
+            <span class="wap-compare__icon">{% if block.settings.us %}✓{% else %}✕{% endif %}</span>
+            {%- if block.settings.us_note != blank -%}<small>{{ block.settings.us_note }}</small>{%- endif -%}
+          </div>
+          <div class="wap-compare__them">
+            <span class="wap-compare__icon">{% if block.settings.them %}✓{% else %}✕{% endif %}</span>
+            {%- if block.settings.them_note != blank -%}<small>{{ block.settings.them_note }}</small>{%- endif -%}
+          </div>
+        </div>
+      {%- endif -%}
+    {%- endfor -%}
+  {%- endcapture -%}
+  {%- if rows != blank -%}
+    <div class="wap-soft-bg">
+      <div class="wap-wrap wap-block">
+        <h2 class="wap-h2 wap-center">{{ section.settings.compare_heading }}</h2>
+        <div class="wap-compare">
+          <div class="wap-compare__row wap-compare__row--head">
+            <div></div>
+            <div class="wap-compare__us">{{ section.settings.compare_us }}</div>
+            <div class="wap-compare__them">{{ section.settings.compare_them }}</div>
+          </div>
+          {{ rows }}
+        </div>
+      </div>
+    </div>
+  {%- endif -%}
+
+  {%- comment -%} ===== PREGUNTAS FRECUENTES ===== {%- endcomment -%}
+  {%- capture faqs -%}
+    {%- for block in section.blocks -%}
+      {%- if block.type == 'pregunta' -%}
+        <details class="wap-faq__item" {{ block.shopify_attributes }} {% if forloop.first %}open{% endif %}>
+          <summary>{{ block.settings.question }}</summary>
+          <div class="wap-faq__answer">{{ block.settings.answer }}</div>
+        </details>
+      {%- endif -%}
+    {%- endfor -%}
+  {%- endcapture -%}
+  {%- if faqs != blank -%}
+    <div class="wap-wrap wap-block wap-faq">
+      <div>
+        <h2 class="wap-h2">{{ section.settings.faq_heading }}</h2>
+        {%- if section.settings.faq_text != blank -%}<div class="wap-faq__intro">{{ section.settings.faq_text }}</div>{%- endif -%}
+      </div>
+      <div class="wap-faq__list">{{ faqs }}</div>
+    </div>
+  {%- endif -%}
+
+  {%- comment -%} ===== BOTON FIJO EN MOVIL ===== {%- endcomment -%}
+  {%- if product_item != blank -%}
+    <div class="wap-sticky" data-wap-sticky>
+      <span class="wap-sticky__price" data-wap-sticky-price>{{ variant.price | money }}</span>
+      <a class="wap-btn" href="#wap-comprar">{{ section.settings.buy_button }}</a>
+    </div>
+  {%- endif -%}
+</div>
+
+{% stylesheet %}
+  .wap {
+    --wap-text: #1a1a1a;
+    --wap-muted: #6b6b6b;
+    --wap-border: #ececec;
+    color: var(--wap-text);
+  }
+  .wap-wrap {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 20px;
+  }
+  .wap-block {
+    padding-top: 56px;
+    padding-bottom: 8px;
+  }
+  .wap-h2 {
+    margin: 0 0 24px;
+    font-size: clamp(22px, 3vw, 30px);
+    line-height: 1.2;
+  }
+  .wap-center {
+    text-align: center;
+  }
+  .wap-btn {
+    display: inline-block;
+    padding: 14px 28px;
+    border: 2px solid var(--wap-accent);
+    border-radius: 999px;
+    background: var(--wap-accent);
+    color: #fff;
+    font-weight: 700;
+    text-align: center;
+    text-decoration: none;
+    cursor: pointer;
+    transition: transform 0.15s ease, filter 0.15s ease;
+  }
+  .wap-btn:hover {
+    filter: brightness(0.95);
+    transform: translateY(-1px);
+  }
+  .wap-btn--full {
+    display: block;
+    width: 100%;
+    margin-top: 12px;
+    font-size: 16px;
+  }
+  .wap-btn--ghost {
+    background: #fff;
+    color: var(--wap-accent);
+  }
+  .wap-btn[disabled] {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+  .wap-stars {
+    color: #f5b301;
+    letter-spacing: 1px;
+  }
+  .wap-rating {
+    margin: 0 0 10px;
+    font-size: 13px;
+  }
+  .wap-checks {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px 18px;
+    margin: 14px 0 0;
+    padding: 0;
+    list-style: none;
+    font-size: 13px;
+  }
+  .wap-checks li::before {
+    content: '✓ ';
+    color: var(--wap-accent);
+    font-weight: 700;
+  }
+
+  /* Hero */
+  .wap-hero {
+    position: relative;
+    display: flex;
+    align-items: center;
+    min-height: 520px;
+    overflow: hidden;
+    background: var(--wap-soft);
+  }
+  .wap-hero__media {
+    position: absolute;
+    inset: 0;
+  }
+  .wap-hero__img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  .wap-hero__content {
+    position: relative;
+    width: 100%;
+  }
+  .wap-hero__box {
+    max-width: 480px;
+    padding: 28px;
+    border-radius: 16px;
+    background: rgba(255, 255, 255, 0.86);
+    backdrop-filter: blur(6px);
+  }
+  .wap-hero__title {
+    margin: 0 0 12px;
+    font-size: clamp(30px, 4.5vw, 46px);
+    line-height: 1.1;
+  }
+  .wap-hero__text {
+    margin-bottom: 20px;
+    color: var(--wap-muted);
+  }
+  .wap-hero__text p {
+    margin: 0;
+  }
+
+  /* Barra */
+  .wap-bar {
+    overflow: hidden;
+    background: var(--wap-dark);
+    color: #fff;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+  }
+  .wap-bar__track {
+    display: flex;
+    width: max-content;
+    animation: wap-marquee 30s linear infinite;
+  }
+  .wap-bar__group {
+    display: flex;
+  }
+  .wap-bar__group span {
+    padding: 12px 32px;
+    white-space: nowrap;
+  }
+  @keyframes wap-marquee {
+    to { transform: translateX(-50%); }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .wap-bar__track { animation: none; }
+  }
+
+  /* Tarjetas */
+  .wap-cards {
+    display: grid;
+    grid-auto-flow: column;
+    grid-auto-columns: minmax(220px, 1fr);
+    gap: 14px;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    padding-bottom: 6px;
+  }
+  .wap-card {
+    position: relative;
+    aspect-ratio: 4 / 5;
+    overflow: hidden;
+    border-radius: 14px;
+    background: var(--wap-soft);
+    scroll-snap-align: start;
+  }
+  .wap-card img,
+  .wap-card svg {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  .wap-card__label {
+    position: absolute;
+    left: 12px;
+    right: 12px;
+    bottom: 12px;
+    padding: 8px 14px;
+    border-radius: 999px;
+    background: #fff;
+    font-size: 13px;
+    font-weight: 600;
+  }
+
+  /* Compra */
+  .wap-buy {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 40px;
+    align-items: start;
+  }
+  .wap-gallery__main {
+    overflow: hidden;
+    aspect-ratio: 1;
+    border-radius: 16px;
+    background: var(--wap-soft);
+  }
+  .wap-gallery__main img,
+  .wap-gallery__main svg {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  .wap-gallery__thumbs {
+    display: flex;
+    gap: 8px;
+    margin-top: 10px;
+    overflow-x: auto;
+  }
+  .wap-gallery__thumbs button {
+    flex: 0 0 64px;
+    height: 64px;
+    padding: 0;
+    overflow: hidden;
+    border: 2px solid transparent;
+    border-radius: 10px;
+    background: none;
+    cursor: pointer;
+  }
+  .wap-gallery__thumbs button.is-active {
+    border-color: var(--wap-accent);
+  }
+  .wap-gallery__thumbs img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  .wap-badge {
+    display: inline-block;
+    margin-bottom: 10px;
+    padding: 4px 10px;
+    border-radius: 999px;
+    background: var(--wap-soft);
+    color: var(--wap-accent);
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+  }
+  .wap-buy__title {
+    margin: 0 0 8px;
+    font-size: clamp(24px, 3vw, 34px);
+    line-height: 1.15;
+  }
+  .wap-price {
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+    margin: 6px 0 14px;
+    font-size: 26px;
+    font-weight: 700;
+  }
+  .wap-price s {
+    color: var(--wap-muted);
+    font-size: 16px;
+    font-weight: 400;
+  }
+  .wap-buy__text {
+    margin-bottom: 16px;
+    color: var(--wap-muted);
+  }
+  .wap-label {
+    display: block;
+    margin-bottom: 6px;
+    font-size: 13px;
+    font-weight: 600;
+  }
+  .wap-select {
+    width: 100%;
+    height: 46px;
+    margin-bottom: 12px;
+    padding: 0 12px;
+    border: 1px solid var(--wap-border);
+    border-radius: 10px;
+    background: #fff;
+    font: inherit;
+  }
+  .wap-qty {
+    display: inline-flex;
+    align-items: center;
+    border: 1px solid var(--wap-border);
+    border-radius: 999px;
+  }
+  .wap-qty button {
+    width: 42px;
+    height: 42px;
+    border: 0;
+    background: none;
+    font-size: 18px;
+    cursor: pointer;
+  }
+  .wap-qty input {
+    width: 40px;
+    border: 0;
+    background: none;
+    font: inherit;
+    text-align: center;
+    -moz-appearance: textfield;
+  }
+  .wap-qty input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+  }
+  .wap-checks--dark {
+    color: var(--wap-muted);
+  }
+  .wap-empty {
+    padding: 40px;
+    border: 1px dashed var(--wap-border);
+    border-radius: 14px;
+    text-align: center;
+  }
+
+  /* Resenas */
+  .wap-reviews {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 16px;
+  }
+  .wap-review {
+    padding: 20px;
+    border: 1px solid var(--wap-border);
+    border-radius: 14px;
+    background: #fff;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.04);
+  }
+  .wap-review__head {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 10px;
+  }
+  .wap-review__head > div {
+    flex: 1;
+  }
+  .wap-review__avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+  }
+  .wap-review__name,
+  .wap-review__meta,
+  .wap-review__title {
+    margin: 0;
+  }
+  .wap-review__name,
+  .wap-review__title {
+    font-weight: 700;
+  }
+  .wap-review__meta {
+    color: var(--wap-muted);
+    font-size: 12px;
+  }
+  .wap-review__text {
+    color: var(--wap-muted);
+    font-size: 14px;
+  }
+
+  /* Comparacion */
+  .wap-soft-bg {
+    margin-top: 56px;
+    padding-bottom: 56px;
+    background: var(--wap-soft);
+  }
+  .wap-compare {
+    max-width: 760px;
+    margin: 0 auto;
+    overflow: hidden;
+    border-radius: 14px;
+    background: #fff;
+  }
+  .wap-compare__row {
+    display: grid;
+    grid-template-columns: 1.4fr 1fr 1fr;
+    border-top: 1px solid var(--wap-border);
+  }
+  .wap-compare__row > div {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 4px;
+    padding: 14px;
+    font-size: 14px;
+  }
+  .wap-compare__row--head {
+    border-top: 0;
+    font-weight: 700;
+  }
+  .wap-compare__us,
+  .wap-compare__them {
+    align-items: center;
+    text-align: center;
+  }
+  .wap-compare__us {
+    background: var(--wap-accent);
+    color: #fff;
+  }
+  .wap-compare__them small,
+  .wap-compare__them .wap-compare__icon {
+    color: var(--wap-muted);
+  }
+  .wap-compare__icon {
+    font-size: 18px;
+    font-weight: 700;
+  }
+
+  /* Preguntas */
+  .wap-faq {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: 40px;
+    padding-bottom: 72px;
+  }
+  .wap-faq__intro {
+    color: var(--wap-muted);
+  }
+  .wap-faq__item {
+    border-bottom: 1px solid var(--wap-border);
+  }
+  .wap-faq__item summary {
+    display: flex;
+    justify-content: space-between;
+    padding: 16px 0;
+    font-weight: 600;
+    list-style: none;
+    cursor: pointer;
+  }
+  .wap-faq__item summary::-webkit-details-marker {
+    display: none;
+  }
+  .wap-faq__item summary::after {
+    content: '+';
+    font-size: 20px;
+    line-height: 1;
+  }
+  .wap-faq__item[open] summary::after {
+    content: '−';
+  }
+  .wap-faq__answer {
+    padding-bottom: 16px;
+    color: var(--wap-muted);
+  }
+
+  /* Boton fijo movil */
+  .wap-sticky {
+    display: none;
+  }
+
+  @media (max-width: 749px) {
+    .wap-hero {
+      align-items: flex-end;
+      min-height: 560px;
+    }
+    .wap-hero__content {
+      padding-bottom: 20px;
+    }
+    .wap-buy,
+    .wap-faq {
+      grid-template-columns: 1fr;
+      gap: 20px;
+    }
+    .wap-compare__row {
+      grid-template-columns: 1.2fr 1fr 1fr;
+    }
+    .wap-compare__row > div {
+      padding: 10px 8px;
+      font-size: 12px;
+    }
+    .wap-sticky {
+      position: fixed;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      z-index: 20;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 10px 16px;
+      border-top: 1px solid var(--wap-border);
+      background: #fff;
+      transform: translateY(100%);
+      transition: transform 0.2s ease;
+    }
+    .wap-sticky.is-visible {
+      transform: none;
+    }
+    .wap-sticky__price {
+      font-size: 18px;
+      font-weight: 700;
+    }
+  }
+{% endstylesheet %}
+
+{% javascript %}
+  document.querySelectorAll('[data-wap]').forEach((root) => {
+    const form = root.querySelector('[data-wap-form]');
+    if (!form) return;
+
+    const money = (cents) =>
+      new Intl.NumberFormat(root.dataset.locale, { style: 'currency', currency: root.dataset.currency }).format(cents / 100);
+
+    const variantInput = form.querySelector('[data-wap-variant]');
+    const qtyInput = form.querySelector('[data-wap-qty]');
+    const buy = form.querySelector('[data-wap-buy]');
+    const mainImage = root.querySelector('[data-wap-main]');
+    const stickyPrice = root.querySelector('[data-wap-sticky-price]');
+
+    // "Comprar ahora": enlace de carrito que lleva directo al checkout
+    function update() {
+      const qty = Math.max(1, Math.min(99, parseInt(qtyInput.value, 10) || 1));
+      qtyInput.value = qty;
+      buy.href = `${buy.dataset.cartUrl}/${variantInput.value}:${qty}`;
+    }
+
+    form.addEventListener('click', (e) => {
+      const btn = e.target.closest('[data-wap-step]');
+      if (!btn) return;
+      qtyInput.value = (parseInt(qtyInput.value, 10) || 1) + Number(btn.dataset.wapStep);
+      update();
+    });
+    qtyInput.addEventListener('change', update);
+
+    if (variantInput.tagName === 'SELECT') {
+      variantInput.addEventListener('change', () => {
+        const option = variantInput.selectedOptions[0];
+        const price = Number(option.dataset.price) || 0;
+        const compare = Number(option.dataset.compare) || 0;
+        root.querySelector('[data-wap-price]').textContent = money(price);
+        root.querySelector('[data-wap-compare]').textContent = compare > price ? money(compare) : '';
+        if (stickyPrice) stickyPrice.textContent = money(price);
+        if (option.dataset.image && mainImage) {
+          mainImage.src = option.dataset.image;
+          mainImage.removeAttribute('srcset');
+        }
+        update();
+      });
+    }
+
+    root.querySelectorAll('[data-wap-thumb]').forEach((thumb) => {
+      thumb.addEventListener('click', () => {
+        if (!mainImage) return;
+        mainImage.src = thumb.dataset.wapThumb;
+        mainImage.removeAttribute('srcset');
+        root.querySelectorAll('[data-wap-thumb]').forEach((t) => t.classList.toggle('is-active', t === thumb));
+      });
+    });
+
+    // Boton fijo en movil: aparece cuando la caja de compra no esta en pantalla
+    const sticky = root.querySelector('[data-wap-sticky]');
+    const buyBox = root.querySelector('#wap-comprar');
+    if (sticky && buyBox && 'IntersectionObserver' in window) {
+      new IntersectionObserver(([entry]) => {
+        sticky.classList.toggle('is-visible', !entry.isIntersecting);
+      }).observe(buyBox);
+    }
+
+    update();
+  });
+{% endjavascript %}
+
+{% schema %}
+{
+  "name": "WAP Landing",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+    { "type": "product", "id": "product", "label": "Producto" },
+    { "type": "header", "content": "Colores" },
+    { "type": "color", "id": "accent", "label": "Color principal", "default": "#e86a8a" },
+    { "type": "color", "id": "soft", "label": "Color de fondo suave", "default": "#fdeef2" },
+    { "type": "color", "id": "dark", "label": "Color de la barra", "default": "#c94d6e" },
+    { "type": "header", "content": "Portada" },
+    { "type": "image_picker", "id": "hero_image", "label": "Imagen de portada" },
+    {
+      "type": "text",
+      "id": "rating_text",
+      "label": "Texto de calificación",
+      "info": "Solo usa números reales (ej. 4.8 | 120 reseñas). Déjalo vacío para ocultarlo."
+    },
+    { "type": "text", "id": "heading", "label": "Título", "default": "Protección SPF 50+ sin residuo blanco." },
+    {
+      "type": "richtext",
+      "id": "subheading",
+      "label": "Texto",
+      "default": "<p>Protector solar en barra: se desliza fácil, no mancha las manos y cabe en tu bolsillo.</p>"
+    },
+    { "type": "text", "id": "hero_button", "label": "Texto del botón", "default": "Comprar ahora" },
+    { "type": "text", "id": "check_1", "label": "Ventaja 1", "default": "SPF 50+" },
+    { "type": "text", "id": "check_2", "label": "Ventaja 2", "default": "Formato en barra de 20 g" },
+    { "type": "header", "content": "Caja de compra" },
+    { "type": "text", "id": "buy_badge", "label": "Etiqueta", "default": "Más vendido" },
+    {
+      "type": "richtext",
+      "id": "buy_text",
+      "label": "Descripción corta",
+      "default": "<p>Acabado sedoso y ligero. Aplícalo sobre la piel y vuelve a aplicar durante el día.</p>"
+    },
+    { "type": "text", "id": "buy_button", "label": "Texto del botón", "default": "Comprar ahora" },
+    { "type": "header", "content": "Títulos" },
+    { "type": "text", "id": "cards_heading", "label": "Título de tarjetas", "default": "Hecho para tu día a día." },
+    { "type": "text", "id": "reviews_heading", "label": "Título de reseñas", "default": "Lo que dicen nuestros clientes" },
+    { "type": "text", "id": "compare_heading", "label": "Título de comparación", "default": "¿Por qué en barra?" },
+    { "type": "text", "id": "compare_us", "label": "Columna destacada", "default": "Nuestro stick" },
+    { "type": "text", "id": "compare_them", "label": "Columna comparada", "default": "Protector en crema" },
+    { "type": "text", "id": "faq_heading", "label": "Título de preguntas", "default": "Preguntas frecuentes" },
+    {
+      "type": "richtext",
+      "id": "faq_text",
+      "label": "Texto de preguntas",
+      "default": "<p>¿No encuentras tu respuesta? Escríbenos y te ayudamos.</p>"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "barra",
+      "name": "Barra: beneficio",
+      "settings": [
+        { "type": "text", "id": "text", "label": "Texto", "default": "SPF 50+" }
+      ]
+    },
+    {
+      "type": "tarjeta",
+      "name": "Tarjeta con imagen",
+      "settings": [
+        { "type": "image_picker", "id": "image", "label": "Imagen" },
+        { "type": "text", "id": "title", "label": "Texto", "default": "Sin residuo blanco" }
+      ]
+    },
+    {
+      "type": "resena",
+      "name": "Reseña",
+      "settings": [
+        {
+          "type": "paragraph",
+          "content": "Usa solo reseñas reales de clientes. Si el texto está vacío, la reseña no se muestra."
+        },
+        { "type": "text", "id": "name", "label": "Nombre del cliente" },
+        { "type": "checkbox", "id": "verified", "label": "Compra verificada", "default": false },
+        { "type": "range", "id": "stars", "label": "Estrellas", "min": 1, "max": 5, "step": 1, "default": 5 },
+        { "type": "text", "id": "title", "label": "Título" },
+        { "type": "richtext", "id": "text", "label": "Reseña" },
+        { "type": "image_picker", "id": "image", "label": "Foto" }
+      ]
+    },
+    {
+      "type": "comparacion",
+      "name": "Comparación: fila",
+      "settings": [
+        { "type": "text", "id": "feature", "label": "Característica", "default": "No ensucia las manos" },
+        { "type": "checkbox", "id": "us", "label": "Nuestro producto lo tiene", "default": true },
+        { "type": "text", "id": "us_note", "label": "Nota (nuestro)" },
+        { "type": "checkbox", "id": "them", "label": "El otro lo tiene", "default": false },
+        { "type": "text", "id": "them_note", "label": "Nota (otro)" }
+      ]
+    },
+    {
+      "type": "pregunta",
+      "name": "Pregunta frecuente",
+      "settings": [
+        { "type": "text", "id": "question", "label": "Pregunta", "default": "¿Cómo se aplica?" },
+        {
+          "type": "richtext",
+          "id": "answer",
+          "label": "Respuesta",
+          "default": "<p>Desliza la barra sobre la piel limpia antes de salir al sol y vuelve a aplicar durante el día.</p>"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "WAP Landing",
+      "blocks": [
+        { "type": "barra", "settings": { "text": "SPF 50+" } },
+        { "type": "barra", "settings": { "text": "Sin residuo blanco" } },
+        { "type": "barra", "settings": { "text": "Formato en barra" } },
+        { "type": "barra", "settings": { "text": "Cabe en tu bolsillo" } },
+        { "type": "barra", "settings": { "text": "Acabado sedoso" } },
+        { "type": "tarjeta", "settings": { "title": "Sin residuo blanco" } },
+        { "type": "tarjeta", "settings": { "title": "No ensucia las manos" } },
+        { "type": "tarjeta", "settings": { "title": "Fácil de llevar" } },
+        { "type": "tarjeta", "settings": { "title": "SPF 50+" } },
+        { "type": "comparacion", "settings": { "feature": "No ensucia las manos", "us": true, "them": false } },
+        { "type": "comparacion", "settings": { "feature": "Fácil de reaplicar fuera de casa", "us": true, "them": false } },
+        { "type": "comparacion", "settings": { "feature": "Cabe en el bolsillo", "us": true, "them": false } },
+        { "type": "comparacion", "settings": { "feature": "SPF 50+", "us": true, "them": true, "them_note": "Depende de la marca" } },
+        { "type": "pregunta", "settings": { "question": "¿Cómo se aplica?" } },
+        {
+          "type": "pregunta",
+          "settings": {
+            "question": "¿Cuánto tarda el envío?",
+            "answer": "<p>Escribe aquí tus tiempos de envío.</p>"
+          }
+        },
+        {
+          "type": "pregunta",
+          "settings": {
+            "question": "¿Puedo devolverlo?",
+            "answer": "<p>Escribe aquí tu política de devoluciones.</p>"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
